@@ -12,8 +12,6 @@ logs/
 .idea/
 .vscode/
 *.iml
-*.ipr
-*.iws
 
 # ======================
 # ENV FILES
@@ -23,46 +21,49 @@ logs/
 !.env.example
 
 # ======================
-# BACKEND (SPRING BOOT)
+# BACKEND (Spring Boot)
 # ======================
-/api/target/
-/api/build/
-/api/.mvn/
-/api/.gradle/
+backend/school-api/target/
+backend/school-api/build/
+backend/school-api/.gradle/
+
+# Optional (global Java artifacts)
 *.jar
 *.war
 
 # ======================
-# FRONTEND (REACT NATIVE)
+# FRONTEND (React Native)
 # ======================
-/SchoolApp/node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+frontend/node_modules/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
 
 # Metro bundler
-/SchoolApp/.metro-health-check*
+frontend/.metro-health-check*
 
-# React Native cache
-/SchoolApp/.expo/
-/SchoolApp/.expo-shared/
+# Expo (if using Expo)
+frontend/.expo/
+frontend/.expo-shared/
 
 # ======================
 # ANDROID (React Native)
 # ======================
-/SchoolApp/android/.gradle/
-/SchoolApp/android/app/build/
-/SchoolApp/android/build/
-/SchoolApp/android/local.properties
+frontend/android/.gradle/
+frontend/android/app/build/
+frontend/android/build/
+frontend/android/local.properties
+frontend/android/.idea/
+
 *.keystore
 *.jks
 
 # ======================
 # iOS (React Native)
 # ======================
-/SchoolApp/ios/build/
-/SchoolApp/ios/Pods/
-/SchoolApp/ios/*.xcworkspace
+frontend/ios/build/
+frontend/ios/Pods/
+frontend/ios/*.xcworkspace
 
 # ======================
 # MISC
