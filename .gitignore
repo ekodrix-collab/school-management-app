@@ -23,9 +23,11 @@ logs/
 # ======================
 # BACKEND (Spring Boot)
 # ======================
-backend/target/
-backend/build/
-backend/.gradle/
+backend/school-api/target/
+backend/school-api/build/
+backend/school-api/.gradle/
+
+# Optional (global Java artifacts)
 *.jar
 *.war
 
