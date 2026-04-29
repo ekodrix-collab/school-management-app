@@ -4,21 +4,24 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Data
 @Table(name = "users")
 public class User {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "user_id",unique = true)
+    private UUID userId;
+
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "mobile", nullable = false, unique = true)
+    @Column(name = "mobile", nullable = false)
     private String mobile;
 
     @Column(name = "password", nullable = false)
@@ -26,6 +29,9 @@ public class User {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "role",nullable = false)
+    private String role;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
