@@ -1,0 +1,50 @@
+{
+    "common": {
+        "welcome": "സ്വാഗതം",
+        "logout": "പുറത്തുകടക്കുക",
+        "cancel": "റദ്ദാക്കുക",
+        "loading": "കാത്തിരിക്കുക...",
+        "save": "സൂക്ഷിക്കുക",
+        "submit": "സമർപ്പിക്കുക",
+        "back": "തിരികെ"
+    },
+    "auth": {
+        "login_title": "ലോഗിൻ ചെയ്യുക",
+        "mobile_placeholder": "മൊബൈൽ നമ്പർ",
+        "password_placeholder": "പാസ്‌വേഡ്",
+        "login_button": "ലോഗിൻ",
+        "forgot_password": "പാസ്‌വേഡ് മറന്നോ?"
+    },
+    "dashboard": {
+        "greeting": "സുപ്രഭാതം",
+        "quick_access": "പ്രധാന സേവനങ്ങൾ",
+        "recent_updates": "പുതിയ വിവരങ്ങൾ",
+        "attendance": "ഹാജർ",
+        "homework": "ഹോംവർക്ക്",
+        "marks": "മാർക്കുകൾ",
+        "fees": "ഫീസ്",
+        "diary": "ഡയറി",
+        "timetable": "ടൈംടേബിൾ",
+        "news": "വാർത്തകൾ",
+        "bus_tracking": "ബസ് ട്രാക്കിംഗ്",
+        "leave_letter": "അവധി അപേക്ഷ"
+    },
+    "profile": {
+        "settings": "ക്രമീകരണങ്ങൾ",
+        "account_info": "അക്കൗണ്ട് വിവരങ്ങൾ",
+        "student_details": "വിദ്യാർത്ഥിയുടെ വിവരങ്ങൾ",
+        "mobile": "മൊബൈൽ നമ്പർ",
+        "email": "ഇമെയിൽ വിലാസം",
+        "not_provided": "നൽകിയിട്ടില്ല",
+        "student_name": "വിദ്യാർത്ഥിയുടെ പേര്",
+        "class": "ക്ലാസ്സ്",
+        "language": "ഭാഷ മാറ്റുക",
+        "logout_confirm": "നിങ്ങൾക്ക് പുറത്തുകടക്കണോ?"
+    },
+    "teacher": {
+        "class_teacher": "ക്ലാസ് ടീച്ചർ",
+        "subject_teacher": "സബ്ജക്ട് ടീച്ചർ",
+        "my_class_summary": "ക്ലാസ്സ് റിപ്പോർട്ട്",
+        "view_portfolios": "വിദ്യാർത്ഥികളുടെ വിവരങ്ങൾ"
+    }
+}
