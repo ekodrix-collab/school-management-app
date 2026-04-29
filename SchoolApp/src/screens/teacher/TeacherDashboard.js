@@ -24,9 +24,8 @@ const TeacherDashboard = ({ navigation }) => {
 
     /**
      * FETCH CLASS STATS
-     * Only runs if the user is a 'Class Teacher'
      */
-    const { data: classStats, isLoading: statsLoading } = useQuery({
+    const { data: classStats } = useQuery({
         queryKey: ['classOverview', user?.classId],
         queryFn: () => teacherService.getClassOverview(user?.classId),
         enabled: !!user?.isClassTeacher,
@@ -40,7 +39,7 @@ const TeacherDashboard = ({ navigation }) => {
                 showsVerticalScrollIndicator={false}
             >
 
-                {/* --- 1. PREMIUM HEADER --- */}
+                {/* --- 1. CLEAN HEADER (BLUE AREA) --- */}
                 <View style={[styles.header, { backgroundColor: COLORS.primary || '#2563eb' }]}>
                     <View style={styles.headerTop}>
                         <View>
@@ -60,86 +59,64 @@ const TeacherDashboard = ({ navigation }) => {
                     </View>
                 </View>
 
-                {/* --- 2. CLASS TEACHER CONSOLE (Conditional) --- */}
+                {/* --- 2. CLASS TEACHER SUMMARY (BELOW BLUE AREA) --- */}
                 {user?.isClassTeacher && (
                     <View style={styles.classSection}>
-                        <Text style={styles.sectionTitle}>{t('teacher.my_class_summary')}</Text>
-
-                        {/* STATS GRID - Updated with more spacing */}
-                        <View style={styles.statsGrid}>
-                            <View style={[styles.statBox, { borderLeftColor: '#22c55e' }]}>
-                                <Text style={styles.statVal}>{classStats?.presentToday || '42'}</Text>
-                                <Text style={styles.statLab}>{t('dashboard.attendance')}</Text>
+                        <View style={styles.summaryCard}>
+                            <View style={styles.summaryHeader}>
+                                <Ionicons name="stats-chart" size={18} color={COLORS.primary} />
+                                <Text style={styles.summaryTitle}>{t('teacher.my_class_summary')}</Text>
                             </View>
 
-                            <View style={[styles.statBox, { borderLeftColor: '#ef4444' }]}>
-                                <Text style={styles.statVal}>{classStats?.absentToday || '3'}</Text>
-                                <Text style={styles.statLab}>Absent</Text>
+                            <View style={styles.statsGrid}>
+                                <View style={[styles.statBox, { backgroundColor: '#f0fdf4' }]}>
+                                    <Text style={[styles.statVal, { color: '#16a34a' }]}>{classStats?.presentToday || '42'}</Text>
+                                    <Text style={styles.statLab}>{t('dashboard.attendance')}</Text>
+                                </View>
+
+                                <View style={[styles.statBox, { backgroundColor: '#fef2f2' }]}>
+                                    <Text style={[styles.statVal, { color: '#dc2626' }]}>{classStats?.absentToday || '3'}</Text>
+                                    <Text style={styles.statLab}>Absent</Text>
+                                </View>
+
+                                <TouchableOpacity
+                                    style={[styles.statBox, { backgroundColor: '#fff7ed' }]}
+                                    onPress={() => navigation.navigate('LeaveApproval')}
+                                >
+                                    <Text style={[styles.statVal, { color: '#ea580c' }]}>{classStats?.leaveRequestsPending || '2'}</Text>
+                                    <Text style={styles.statLab}>Leaves</Text>
+                                </TouchableOpacity>
                             </View>
 
                             <TouchableOpacity
-                                style={[styles.statBox, { borderLeftColor: '#f59e0b' }]}
-                                onPress={() => navigation.navigate('LeaveApproval')}
-                                activeOpacity={0.7}
+                                style={styles.portfolioBtn}
+                                onPress={() => navigation.navigate('MyClassStudents')}
                             >
-                                <Text style={styles.statVal}>{classStats?.leaveRequestsPending || '2'}</Text>
-                                <Text style={styles.statLab}>Leaves</Text>
-                                <View style={styles.actionDot} />
+                                <Text style={styles.portfolioBtnText}>{t('teacher.view_portfolios')}</Text>
+                                <Ionicons name="arrow-forward" size={16} color={COLORS.primary} />
                             </TouchableOpacity>
                         </View>
-
-                        <TouchableOpacity
-                            style={styles.primaryActionBtn}
-                            onPress={() => navigation.navigate('MyClassStudents')}
-                        >
-                            <Ionicons name="people-circle" size={24} color="#fff" />
-                            <Text style={styles.primaryActionText}>{t('teacher.view_portfolios')}</Text>
-                        </TouchableOpacity>
                     </View>
                 )}
 
-                {/* --- 3. ACADEMIC TASKS GRID (For All Teachers) --- */}
+                {/* --- 3. ACADEMIC TASKS GRID --- */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>{t('dashboard.quick_access')}</Text>
                     <View style={styles.cardsContainer}>
-                        <DashboardCard
-                            title={t('dashboard.attendance')}
-                            icon="checkmark-circle-outline"
-                            onPress={() => navigation.navigate('MarkAttendance')}
-                        />
-                        <DashboardCard
-                            title={t('dashboard.homework')}
-                            icon="create-outline"
-                            onPress={() => navigation.navigate('AddHomework')}
-                        />
-                        <DashboardCard
-                            title={t('dashboard.marks')}
-                            icon="trophy-outline"
-                            onPress={() => navigation.navigate('AddMarks')}
-                        />
-                        <DashboardCard
-                            title={t('dashboard.timetable')}
-                            icon="time-outline"
-                            onPress={() => navigation.navigate('MySchedule')}
-                        />
-                        <DashboardCard
-                            title={t('dashboard.fees')}
-                            icon="wallet-outline"
-                            onPress={() => navigation.navigate('FeeManagement')}
-                        />
-                        <DashboardCard
-                            title={t('common.notifications')}
-                            icon="notifications-outline"
-                            onPress={() => navigation.navigate('Notifications')}
-                        />
+                        <DashboardCard title={t('dashboard.attendance')} icon="checkmark-circle-outline" onPress={() => navigation.navigate('MarkAttendance')} />
+                        <DashboardCard title={t('dashboard.homework')} icon="create-outline" onPress={() => navigation.navigate('AddHomework')} />
+                        <DashboardCard title={t('dashboard.marks')} icon="trophy-outline" onPress={() => navigation.navigate('AddMarks')} />
+                        <DashboardCard title={t('dashboard.timetable')} icon="time-outline" onPress={() => navigation.navigate('MySchedule')} />
+                        <DashboardCard title={t('dashboard.fees')} icon="wallet-outline" onPress={() => navigation.navigate('FeeManagement')} />
+                        <DashboardCard title={t('common.notifications')} icon="notifications-outline" onPress={() => navigation.navigate('Notifications')} />
                     </View>
                 </View>
 
-                {/* --- 4. TEACHER TIP --- */}
+                {/* --- 4. BOTTOM TIP --- */}
                 <View style={styles.tipCard}>
-                    <Ionicons name="bulb" size={20} color="#f59e0b" />
+                    <Ionicons name="information-circle" size={20} color={COLORS.primary} />
                     <Text style={styles.tipText}>
-                        Tip: You can now approve leave requests directly from the Class Summary section.
+                        Tap on 'Leaves' in the summary box to quickly approve pending requests.
                     </Text>
                 </View>
 
@@ -149,161 +126,67 @@ const TeacherDashboard = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#f8fafc'
-    },
-    scrollContent: {
-        paddingBottom: 40
-    },
+    container: { flex: 1, backgroundColor: '#f1f5f9' },
+    scrollContent: { paddingBottom: 40 },
 
-    // Header Styling
+    // Header
     header: {
         paddingHorizontal: 20,
         paddingTop: 20,
-        paddingBottom: 65,
-        borderBottomLeftRadius: 35,
-        borderBottomRightRadius: 35,
-        elevation: 5,
+        paddingBottom: 30,
+        borderBottomLeftRadius: 25,
+        borderBottomRightRadius: 25
     },
-    headerTop: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    greeting: {
-        fontSize: 13,
-        color: 'rgba(255,255,255,0.8)',
-        fontWeight: '600'
-    },
-    teacherName: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        color: '#fff',
-        marginTop: 2
-    },
-    roleBadge: {
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        paddingHorizontal: 10,
-        paddingVertical: 4,
-        borderRadius: 12,
-        alignSelf: 'flex-start',
-        marginTop: 8
-    },
-    roleText: {
-        color: '#fff',
-        fontSize: 11,
-        fontWeight: 'bold',
-        textTransform: 'uppercase'
-    },
-    logoutBtn: {
-        width: 42,
-        height: 42,
-        borderRadius: 21,
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
+    headerTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    greeting: { fontSize: 13, color: 'rgba(255,255,255,0.8)' },
+    teacherName: { fontSize: 22, fontWeight: 'bold', color: '#fff' },
+    roleBadge: { backgroundColor: 'rgba(255,255,255,0.2)', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, alignSelf: 'flex-start', marginTop: 8 },
+    roleText: { color: '#fff', fontSize: 11, fontWeight: 'bold' },
+    logoutBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(255,255,255,0.2)', justifyContent: 'center', alignItems: 'center' },
 
-    // Class Teacher Summary Section
-    classSection: {
-        paddingHorizontal: 20,
-        marginTop: -35
-    },
-    sectionTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#1e293b',
-        marginBottom: 15,
-        marginLeft: 5
-    },
-    statsGrid: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 25 // ADDED: More margin bottom to separate from the button below
-    },
-    statBox: {
+    // Class Teacher Summary Card
+    classSection: { paddingHorizontal: 20, marginTop: 20 },
+    summaryCard: {
         backgroundColor: '#fff',
-        width: '31%',
-        paddingVertical: 18, // UPDATED: More vertical padding for better look
-        paddingHorizontal: 10,
-        borderRadius: 18,
-        elevation: 8,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
-        borderLeftWidth: 5,
-        position: 'relative'
-    },
-    statVal: {
-        fontSize: 22, // Slightly larger
-        fontWeight: 'bold',
-        color: '#1e293b',
-        textAlign: 'center'
-    },
-    statLab: {
-        fontSize: 10,
-        color: '#64748b',
-        fontWeight: 'bold',
-        marginTop: 4,
-        textTransform: 'uppercase',
-        textAlign: 'center'
-    },
-    actionDot: {
-        position: 'absolute',
-        top: 8,
-        right: 8,
-        width: 6,
-        height: 6,
-        borderRadius: 3,
-        backgroundColor: '#f59e0b'
-    },
-    primaryActionBtn: {
-        backgroundColor: '#1e293b',
-        padding: 18,
         borderRadius: 20,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        elevation: 5,
-        marginTop: 5 // Spacing from grid
+        padding: 20,
+        elevation: 4,
+        shadowColor: '#000',
+        shadowOpacity: 0.05,
+        shadowRadius: 10
     },
-    primaryActionText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        marginLeft: 10,
-        fontSize: 15
-    },
+    summaryHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 15 },
+    summaryTitle: { fontSize: 15, fontWeight: 'bold', color: '#1e293b', marginLeft: 8 },
 
-    // Daily Tasks Grid
-    section: {
-        paddingHorizontal: 20,
-        marginTop: 35 // ADDED: More space between Class Summary and Tasks
-    },
-    cardsContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between'
-    },
-
-    // Bottom Tip Card
-    tipCard: {
-        margin: 20,
-        padding: 15,
-        backgroundColor: '#fffbeb',
+    statsGrid: { flexDirection: 'row', justifyContent: 'space-between' },
+    statBox: {
+        width: '31%',
+        paddingVertical: 15,
         borderRadius: 15,
+        alignItems: 'center'
+    },
+    statVal: { fontSize: 20, fontWeight: 'bold' },
+    statLab: { fontSize: 10, color: '#64748b', fontWeight: 'bold', marginTop: 4, textTransform: 'uppercase' },
+
+    portfolioBtn: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#fef3c7'
+        justifyContent: 'center',
+        marginTop: 20,
+        paddingTop: 15,
+        borderTopWidth: 1,
+        borderTopColor: '#f1f5f9'
     },
-    tipText: {
-        fontSize: 12,
-        color: '#92400e',
-        marginLeft: 10,
-        flex: 1,
-        lineHeight: 18
-    }
+    portfolioBtnText: { color: COLORS.primary, fontWeight: 'bold', fontSize: 14, marginRight: 5 },
+
+    // Tasks Grid
+    section: { paddingHorizontal: 20, marginTop: 30 },
+    sectionTitle: { fontSize: 17, fontWeight: 'bold', color: '#1e293b', marginBottom: 15 },
+    cardsContainer: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
+
+    // Tip Card
+    tipCard: { margin: 20, padding: 15, backgroundColor: '#e0f2fe', borderRadius: 15, flexDirection: 'row', alignItems: 'center' },
+    tipText: { fontSize: 12, color: '#0369a1', marginLeft: 10, flex: 1 }
 });
 
 export default TeacherDashboard;
