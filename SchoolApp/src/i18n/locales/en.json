@@ -1,0 +1,50 @@
+{
+    "common": {
+        "welcome": "Welcome",
+        "logout": "Logout",
+        "cancel": "Cancel",
+        "loading": "Loading...",
+        "save": "Save",
+        "submit": "Submit",
+        "back": "Back"
+    },
+    "auth": {
+        "login_title": "Sign In",
+        "mobile_placeholder": "Mobile Number",
+        "password_placeholder": "Password",
+        "login_button": "Login",
+        "forgot_password": "Forgot Password?"
+    },
+    "dashboard": {
+        "greeting": "Good Morning",
+        "quick_access": "Quick Access",
+        "recent_updates": "Recent Updates",
+        "attendance": "Attendance",
+        "homework": "Homework",
+        "marks": "Marks",
+        "fees": "Fees",
+        "diary": "Diary",
+        "timetable": "Timetable",
+        "news": "NEWS",
+        "bus_tracking": "Bus Tracking",
+        "leave_letter": "Leave Letter"
+    },
+    "profile": {
+        "settings": "Settings",
+        "account_info": "Account Information",
+        "student_details": "Student Details",
+        "mobile": "Mobile Number",
+        "email": "Email Address",
+        "not_provided": "Not Provided",
+        "student_name": "Student Name",
+        "class": "Standard/Class",
+        "language": "App Language",
+        "logout_confirm": "Are you sure you want to log out?"
+    },
+    "teacher": {
+        "class_teacher": "Class Teacher",
+        "subject_teacher": "Subject Teacher",
+        "my_class_summary": "My Class Summary",
+        "view_portfolios": "View Student Portfolios"
+    }
+}
