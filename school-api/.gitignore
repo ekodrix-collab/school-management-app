@@ -1,0 +1,48 @@
+# ======================
+# GENERAL
+# ======================
+.DS_Store
+Thumbs.db
+*.log
+logs/
+
+# ======================
+# GRADLE
+# ======================
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# ======================
+# INTELLIJ IDEA
+# ======================
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# ======================
+# STS / ECLIPSE
+# ======================
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+
+# ======================
+# ENV FILES
+# ======================
+.env
+.env.*
+!.env.example
+
+# ======================
+# JAVA ARTIFACTS
+# ======================
+*.jar
+*.war
