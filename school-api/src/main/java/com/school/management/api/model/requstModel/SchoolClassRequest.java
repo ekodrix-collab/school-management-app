@@ -12,7 +12,7 @@ public class SchoolClassRequest {
     private String division;
 
     @JsonProperty(value = "class_teacher_id")
-    private Long classTeacherId;
+    private String classTeacherId;
 
 
 

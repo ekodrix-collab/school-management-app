@@ -16,7 +16,7 @@ public class SchoolClassResponse {
     private Integer capacity;
 
     @JsonProperty(value = "class_teacher_id")
-    private Long classTeacherId;
+    private String classTeacherId;
 
     @JsonProperty(value = "academic_year_id")
     private String academicYearID; // "2025-2026"
