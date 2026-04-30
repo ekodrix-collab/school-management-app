@@ -17,7 +17,10 @@ public class Student {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @Column(name = "roll_number", nullable = false, unique = true)
+    @Column(name = "admission_number",nullable = false)
+    private String admissionNumber;
+
+    @Column(name = "roll_number", nullable = false)
     private String rollNumber;
 
     @Column(name = "date_of_birth")
