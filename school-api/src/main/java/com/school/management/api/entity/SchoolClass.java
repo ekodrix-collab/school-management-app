@@ -31,7 +31,7 @@ public class SchoolClass {
     private String classTeacherId;
 
     @Column(name = "academic_year_id")
-    private String academicYearID; // "2025-2026"
+    private String academicYearId; // "2025-2026"
 
     @Column(name = "is_active")
     private Boolean isActive = true;
