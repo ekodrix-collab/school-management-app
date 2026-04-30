@@ -2,11 +2,13 @@ package com.school.management.api.controller.authController;
 
 
 import com.school.management.api.constants.Constants;
-import com.school.management.api.model.AuthResponse;
-import com.school.management.api.model.LoginRequest;
-import com.school.management.api.model.RegisterRequest;
+import com.school.management.api.model.requstModel.OnboardRequest;
+import com.school.management.api.model.responseModel.AuthResponse;
+import com.school.management.api.model.requstModel.LoginRequest;
+import com.school.management.api.model.requstModel.RegisterRequest;
 import com.school.management.api.service.authService.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

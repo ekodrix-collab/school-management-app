@@ -29,6 +29,9 @@ public class Student {
     @Column(name = "blood_group",length = 5)
     private String bloodGroup;
 
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
