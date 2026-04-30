@@ -1,4 +1,4 @@
-package com.school.management.api.model;
+package com.school.management.api.model.responseModel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -15,28 +15,28 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AuthResponse {
 
-    @JsonProperty("token_type")
+    @JsonProperty(value = "token_type")
     private String tokenType;
 
-    @JsonProperty("access_token")
+    @JsonProperty(value = "access_token")
     private String accessToken;
 
-    @JsonProperty("user_id")
+    @JsonProperty(value = "user_id")
     private UUID userId;
 
-    @JsonProperty("role")
+    @JsonProperty(value = "role")
     private String role;
 
-    @JsonProperty("name")
+    @JsonProperty(value = "name")
     private String name;
 
-    @JsonProperty("issued_at")
+    @JsonProperty(value = "issued_at")
     private Date issuedAt;
 
-    @JsonProperty("expiry_date")
+    @JsonProperty(value = "expiry_date")
     private Date expiryDate;
 
-    @JsonProperty("expiry_time_ms")
+    @JsonProperty(value = "expiry_time_ms")
     private long expiryTimeMs;
 
 }
