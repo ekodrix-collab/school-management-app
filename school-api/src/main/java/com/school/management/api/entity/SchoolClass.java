@@ -45,4 +45,9 @@ public class SchoolClass {
     public String getAcademicYearID() {
         return academicYearId;
     }
+
+    public void setAcademicYearID(String s) {
+
+        this.academicYearId = s;
+    }
 }
