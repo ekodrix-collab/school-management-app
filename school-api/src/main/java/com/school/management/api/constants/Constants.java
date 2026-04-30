@@ -12,6 +12,7 @@ public class Constants {
     public static final String AUTH_ROUTE = "/api/v1/auth" ;
     public static final String STUDENT_ROUTE = "/api/v1/student";
     public static final String TEACHER_ROUTE = "/api/v1/teacher" ;
+    public static final String SCHOOL_CLASS_ROUTE = "/api/v1/school-class" ;
 
     //GENDER
     public static final String MALE = "MALE";
