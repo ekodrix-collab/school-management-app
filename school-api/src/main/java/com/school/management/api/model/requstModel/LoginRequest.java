@@ -1,4 +1,4 @@
-package com.school.management.api.model;
+package com.school.management.api.model.requstModel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

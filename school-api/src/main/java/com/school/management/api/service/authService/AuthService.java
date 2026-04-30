@@ -1,10 +1,10 @@
 package com.school.management.api.service.authService;
 
-
 import com.school.management.api.entity.User;
-import com.school.management.api.model.AuthResponse;
-import com.school.management.api.model.LoginRequest;
-import com.school.management.api.model.RegisterRequest;
+import com.school.management.api.model.requstModel.OnboardRequest;
+import com.school.management.api.model.responseModel.AuthResponse;
+import com.school.management.api.model.requstModel.LoginRequest;
+import com.school.management.api.model.requstModel.RegisterRequest;
 import com.school.management.api.repository.UserRepository;
 import com.school.management.api.security.CustomUserDetails;
 import com.school.management.api.security.JwtTokenProvider;
@@ -28,15 +28,11 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    // ── Login ─────────────────────────────────────────────────────────────────
-
     public AuthResponse login(LoginRequest request) {
 
         // Authenticate via mobile + password
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getMobile(), request.getPassword())
-        );
+                new UsernamePasswordAuthenticationToken(request.getMobile(), request.getPassword()));
 
         String token = jwtTokenProvider.generateToken(authentication);
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -58,8 +54,6 @@ public class AuthService {
                 .build();
     }
 
-    // ── Register ──────────────────────────────────────────────────────────────
-
     public AuthResponse register(RegisterRequest request) {
 
         UUID userId = generateUserId();
@@ -78,9 +72,7 @@ public class AuthService {
 
         // Auto-login after registration
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getMobile(), request.getPassword())
-        );
+                new UsernamePasswordAuthenticationToken(request.getMobile(), request.getPassword()));
 
         String token = jwtTokenProvider.generateToken(authentication);
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
