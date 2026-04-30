@@ -28,7 +28,7 @@ public class SchoolClass {
 
     // Simple approach (MVP)
     @Column(name = "class_teacher_id")
-    private Long classTeacherId;
+    private String classTeacherId;
 
     @Column(name = "academic_year_id")
     private String academicYearID; // "2025-2026"
