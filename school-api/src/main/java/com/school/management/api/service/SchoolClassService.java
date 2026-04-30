@@ -72,17 +72,17 @@ public class SchoolClassService {
         schoolClassRepository.delete(sc);
     }
 
-    private SchoolClassResponse mapToResponse(SchoolClass sc) {
+    private SchoolClassResponse mapToResponse(SchoolClass schoolclass) {
         SchoolClassResponse res = new SchoolClassResponse();
 
         res.setId(sc.getId());
-        res.setDisplayName(sc.getDisplayName());
-        res.setCapacity(sc.getCapacity());
-        res.setClassTeacherId(sc.getClassTeacherId());
-        res.setAcademicYearID(sc.getAcademicYearID());
-        res.setIsActive(sc.getIsActive());
-        res.setCreatedAt(sc.getCreatedAt());
-        res.setUpdatedAt(sc.getUpdatedAt());
+        res.setDisplayName(schoolclass.getDisplayName());
+        res.setCapacity(schoolclass.getCapacity());
+        res.setClassTeacherId(schoolclass.getClassTeacherId());
+        res.setAcademicYearID(schoolclass.getAcademicYearID());
+        res.setIsActive(schoolclass.getIsActive());
+        res.setCreatedAt(schoolclass.getCreatedAt());
+        res.setUpdatedAt(schoolclass.getUpdatedAt());
 
         return res;
     }
