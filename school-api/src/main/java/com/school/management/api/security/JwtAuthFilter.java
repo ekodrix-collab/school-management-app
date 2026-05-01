@@ -32,15 +32,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             String token = extractToken(request);
             if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
-                // Extract userId from token (not mobile — mobile is never stored in JWT)
                 UUID userId = jwtTokenProvider.getUserIdFromToken(token);
-                // Load user from DB using userId
                 UserDetails userDetails = userDetailsService.loadUserByUserId(userId);
-
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
