@@ -37,7 +37,7 @@ public class MapperService {
                 List<String> classId = objectMapper.readValue(
                         teacher.getClassId(), new TypeReference<>() {
                         });
-                response.setSubject(classId);
+                response.setClasses(classId);
             }
         } catch (Exception e) {
             throw new RuntimeException("Failed to deserialize teacher fields", e);
