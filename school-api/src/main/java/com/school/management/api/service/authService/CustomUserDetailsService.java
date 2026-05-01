@@ -1,4 +1,4 @@
-package com.school.management.api;
+package com.school.management.api.service.authService;
 
 import com.school.management.api.entity.User;
 import com.school.management.api.repository.UserRepository;

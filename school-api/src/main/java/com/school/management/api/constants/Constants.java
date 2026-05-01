@@ -19,4 +19,7 @@ public class Constants {
     public static final String FEMALE = "FEMALE";
     public static final String OTHER = "OTHER";
 
+    //INDIAN TIME
+    public static final String INDIAN_TIME = "Asia/Kolkata" ;
+
 }

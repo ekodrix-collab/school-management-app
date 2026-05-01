@@ -17,6 +17,9 @@ public class OnboardRequest {
     @JsonProperty(value = "mobile")
     private String mobile;
 
+    @JsonProperty(value = "school_id")
+    private String schoolId;
+
     @JsonProperty(value = "class_ids")
     private List<String> classIds;
 
@@ -24,7 +27,7 @@ public class OnboardRequest {
     private String role;
 
     @JsonProperty(value = "subject")
-    private String subject;
+    private List<String> subject;
 
 
 }
