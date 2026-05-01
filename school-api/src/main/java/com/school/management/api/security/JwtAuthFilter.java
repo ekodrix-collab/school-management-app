@@ -1,6 +1,6 @@
 package com.school.management.api.security;
 
-import com.school.management.api.CustomUserDetailsService;
+import com.school.management.api.service.authService.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,27 +27,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final CustomUserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest  request,
-                                    HttpServletResponse response,
-                                    FilterChain         filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest  request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
+
             String token = extractToken(request);
-
             if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
-
                 // Extract userId from token (not mobile — mobile is never stored in JWT)
                 UUID userId = jwtTokenProvider.getUserIdFromToken(token);
-
                 // Load user from DB using userId
                 UserDetails userDetails = userDetailsService.loadUserByUserId(userId);
 
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request));
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }

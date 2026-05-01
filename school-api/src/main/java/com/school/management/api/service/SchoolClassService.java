@@ -75,7 +75,7 @@ public class SchoolClassService {
     private SchoolClassResponse mapToResponse(SchoolClass schoolclass) {
         SchoolClassResponse res = new SchoolClassResponse();
 
-        res.setId(sc.getId());
+        res.setId(schoolclass.getId());
         res.setDisplayName(schoolclass.getDisplayName());
         res.setCapacity(schoolclass.getCapacity());
         res.setClassTeacherId(schoolclass.getClassTeacherId());

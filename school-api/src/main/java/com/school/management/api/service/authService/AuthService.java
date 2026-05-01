@@ -1,13 +1,14 @@
 package com.school.management.api.service.authService;
 
 import com.school.management.api.entity.User;
-import com.school.management.api.model.requstModel.OnboardRequest;
-import com.school.management.api.model.responseModel.AuthResponse;
+import com.school.management.api.exception.BadRequestException;
 import com.school.management.api.model.requstModel.LoginRequest;
 import com.school.management.api.model.requstModel.RegisterRequest;
+import com.school.management.api.model.responseModel.AuthResponse;
 import com.school.management.api.repository.UserRepository;
 import com.school.management.api.security.CustomUserDetails;
 import com.school.management.api.security.JwtTokenProvider;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -54,7 +55,13 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional
     public AuthResponse register(RegisterRequest request) {
+
+        if (request.getMobile() != null &&
+                userRepository.findByMobile(request.getMobile()).isPresent()) {
+            throw new BadRequestException("Mobile number already exists");
+        }
 
         UUID userId = generateUserId();
 
@@ -92,7 +99,7 @@ public class AuthService {
                 .build();
     }
 
-    public UUID generateUserId(){
+    public UUID generateUserId() {
         return UUID.randomUUID();
     }
 }

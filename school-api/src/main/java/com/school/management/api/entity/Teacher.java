@@ -33,6 +33,9 @@ public class Teacher {
     @Column(name = "school_id", nullable = false)
     private String schoolId;
 
+    @Column(name = "role")
+    private String role;
+
     @Column(name = "is_first_login")
     private Boolean isFirstLogin;
 

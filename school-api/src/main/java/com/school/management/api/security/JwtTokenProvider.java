@@ -37,20 +37,14 @@ public class JwtTokenProvider {
         Date expiry = new Date(now.getTime() + jwtExpirationMs);
 
         return Jwts.builder()
-                // subject = userId (unique identifier — no mobile in token)
                 .setSubject(user.getUserId().toString())
-                // ── Claims ──────────────────────────────────────────────────
-                .claim("userId", user.getUserId().toString())   // unique user_id
-                .claim("role",   user.getRole())     // e.g. ROLE_ADMIN
-                // ── Time claims (iat + exp) ──────────────────────────────────
-                .setIssuedAt(now)                    // iat — issued at
-                .setExpiration(expiry)               // exp — expiry date & time
-                // ── Signature ───────────────────────────────────────────────
+                .claim("userId", user.getUserId().toString())
+                .claim("role",   user.getRole())
+                .setIssuedAt(now)
+                .setExpiration(expiry)
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-
-    // ── Claim extractors ──────────────────────────────────────────────────────
 
     public UUID getUserIdFromToken(String token) {
         return UUID.fromString(parseClaims(token).get("userId", String.class));
