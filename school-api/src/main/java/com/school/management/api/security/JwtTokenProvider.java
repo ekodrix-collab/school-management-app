@@ -33,13 +33,13 @@ public class JwtTokenProvider {
     }
 
     private String buildToken(CustomUserDetails user) {
-        Date now    = new Date();
+        Date now = new Date();
         Date expiry = new Date(now.getTime() + jwtExpirationMs);
 
         return Jwts.builder()
                 .setSubject(user.getUserId().toString())
                 .claim("userId", user.getUserId().toString())
-                .claim("role",   user.getRole())
+                .claim("role", user.getRole())
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -62,7 +62,6 @@ public class JwtTokenProvider {
         return parseClaims(token).getExpiration();
     }
 
-    // ── Validation ────────────────────────────────────────────────────────────
 
     public boolean validateToken(String token) {
         try {

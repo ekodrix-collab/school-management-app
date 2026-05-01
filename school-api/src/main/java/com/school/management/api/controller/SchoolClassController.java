@@ -19,6 +19,11 @@ public class SchoolClassController {
     @Autowired
     private SchoolClassService schoolClassService;
 
+    @PostMapping("/create")
+    public ResponseEntity<SchoolClassResponse> createClass(@RequestBody SchoolClassRequest request) {
+        return new ResponseEntity<>(schoolClassService.createClass(request), HttpStatus.CREATED);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<SchoolClassResponse>> getAllClasses() {
         return ResponseEntity.ok(schoolClassService.getAllClasses());
@@ -29,24 +34,9 @@ public class SchoolClassController {
         return ResponseEntity.ok(schoolClassService.getClassById(id));
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<SchoolClassResponse> createClass(
-            @RequestBody SchoolClassRequest request) {
-
-        return new ResponseEntity<>(
-                schoolClassService.createClass(request),
-                HttpStatus.CREATED
-        );
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<SchoolClassResponse> updateClass(
-            @PathVariable Long id,
-            @RequestBody SchoolClassRequest request) {
-
-        return ResponseEntity.ok(
-                schoolClassService.updateClass(id, request)
-        );
+    public ResponseEntity<SchoolClassResponse> updateClass(@PathVariable Long id, @RequestBody SchoolClassRequest request) {
+        return ResponseEntity.ok(schoolClassService.updateClass(id, request));
     }
 
     @DeleteMapping("/{id}")
@@ -54,4 +44,5 @@ public class SchoolClassController {
         schoolClassService.deleteClass(id);
         return ResponseEntity.ok("Class deleted successfully");
     }
+
 }
