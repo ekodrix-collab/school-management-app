@@ -3,6 +3,8 @@ package com.school.management.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import lombok.experimental.SuperBuilder;
+
 import java.time.LocalDate;
 
 @Entity
@@ -11,7 +13,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class Admission extends BaseTenantEntity {
 
     @Id

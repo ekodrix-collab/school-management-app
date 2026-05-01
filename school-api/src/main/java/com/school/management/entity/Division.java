@@ -6,29 +6,18 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "teachers")
+@Table(name = "divisions")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class Teacher extends BaseTenantEntity {
+public class Division extends BaseTenantEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false, unique = true)
-    private String employeeId;
-
-    private String qualification;
-
-    private String experience;
-
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String name; // A, B, C
 }

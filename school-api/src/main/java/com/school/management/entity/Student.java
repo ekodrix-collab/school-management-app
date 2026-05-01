@@ -5,13 +5,15 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+import lombok.experimental.SuperBuilder;
+
 @Entity
 @Table(name = "students")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class Student extends BaseTenantEntity {
 
     @Id

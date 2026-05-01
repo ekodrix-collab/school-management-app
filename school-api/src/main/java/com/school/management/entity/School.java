@@ -3,13 +3,15 @@ package com.school.management.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import lombok.experimental.SuperBuilder;
+
 @Entity
 @Table(name = "schools")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class School extends AuditableEntity {
 
     @Id

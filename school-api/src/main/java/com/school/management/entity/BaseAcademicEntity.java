@@ -1,9 +1,7 @@
 package com.school.management.entity;
 
-import com.school.management.tenant.TenantContext;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,17 +20,13 @@ import org.hibernate.annotations.ParamDef;
 @MappedSuperclass
 @SuperBuilder
 @NoArgsConstructor
-@FilterDef(name = "tenantFilter", parameters = @ParamDef(name = "tenantId", type = Long.class))
-@Filter(name = "tenantFilter", condition = "school_id = :tenantId")
-public abstract class BaseTenantEntity extends AuditableEntity {
+@FilterDef(name = "academicYearFilter", parameters = @ParamDef(name = "yearId", type = Long.class))
+@Filter(name = "academicYearFilter", condition = "academic_year_id = :yearId")
+public abstract class BaseAcademicEntity extends BaseTenantEntity {
 
-    @Column(name = "school_id", nullable = false)
-    private Long schoolId;
+    @Column(name = "academic_year_id", nullable = false)
+    private Long academicYearId;
 
-    @PrePersist
-    public void prePersist() {
-        if (this.schoolId == null) {
-            this.schoolId = TenantContext.getCurrentTenant();
-        }
-    }
+    // Note: academicYearId should be set either from a context (like TenantContext)
+    // or passed explicitly during creation.
 }

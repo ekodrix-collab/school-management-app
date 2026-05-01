@@ -5,13 +5,15 @@ import lombok.*;
 
 import java.util.List;
 
+import lombok.experimental.SuperBuilder;
+
 @Entity
 @Table(name = "classes")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class SchoolClass extends BaseTenantEntity {
 
     @Id

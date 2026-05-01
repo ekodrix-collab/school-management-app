@@ -3,13 +3,15 @@ package com.school.management.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import lombok.experimental.SuperBuilder;
+
 @Entity
 @Table(name = "class_subjects")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class ClassSubject extends BaseTenantEntity {
 
     @Id

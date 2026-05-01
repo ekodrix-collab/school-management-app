@@ -5,13 +5,15 @@ import lombok.*;
 
 import java.util.UUID;
 
+import lombok.experimental.SuperBuilder;
+
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class User extends BaseTenantEntity {
 
     @Id
