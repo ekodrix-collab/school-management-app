@@ -1,6 +1,5 @@
 package com.school.management.api.config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tools.jackson.databind.ObjectMapper;
@@ -12,4 +11,5 @@ public class AppConfig {
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
     }
+
 }

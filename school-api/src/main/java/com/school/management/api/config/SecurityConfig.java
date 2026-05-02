@@ -1,5 +1,6 @@
 package com.school.management.api.config;
 
+import com.school.management.api.constants.Constants;
 import com.school.management.api.service.authService.CustomUserDetailsService;
 import com.school.management.api.security.JwtAuthFilter;
 import com.school.management.api.security.SecurityExceptionHandler;
@@ -36,15 +37,18 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(securityExceptionHandler) // 401
-                        .accessDeniedHandler(securityExceptionHandler)) // 403
+                        .authenticationEntryPoint(securityExceptionHandler)
+                        .accessDeniedHandler(securityExceptionHandler))
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/admin/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/api/v1/teacher/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_TEACHER")
+                        .requestMatchers("/api/v1/school/create").hasAuthority(Constants.ROLE_SUPER_ADMIN)
+                        .requestMatchers("/api/v1/school-class/create").hasAnyAuthority(Constants.ROLE_TEACHER,Constants.ROLE_ADMIN)
+                        .requestMatchers("/api/v1/user/create").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_TEACHER)
+                        .requestMatchers("/api/v1/admin/**").hasAuthority(Constants.ROLE_ADMIN)
+                        .requestMatchers("/api/v1/teacher/**").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_TEACHER)
                         .requestMatchers("/api/v1/student/**")
-                        .hasAnyAuthority("ROLE_ADMIN", "ROLE_TEACHER", "ROLE_STUDENT")
+                        .hasAnyAuthority(Constants.ROLE_SUPER_ADMIN, Constants.ROLE_ADMIN,Constants.ROLE_PARENT,Constants.ROLE_TEACHER)
                         .anyRequest().permitAll())
 
                 .authenticationProvider(authenticationProvider())

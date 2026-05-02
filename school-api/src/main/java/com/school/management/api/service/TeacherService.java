@@ -2,11 +2,12 @@ package com.school.management.api.service;
 
 import com.school.management.api.constants.Constants;
 import com.school.management.api.entity.Teacher;
-import com.school.management.api.exception.BadRequestException;
 import com.school.management.api.model.requstModel.OnboardRequest;
 import com.school.management.api.model.responseModel.OnBoardResponse;
 import com.school.management.api.repository.TeacherRepository;
+import com.school.management.api.service.authService.AuthUtil;
 import com.school.management.api.service.mapper.MapperService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
@@ -26,10 +27,8 @@ public class TeacherService {
     @Autowired
     MapperService mapperService;
 
+    @Transactional
     public OnBoardResponse createTeacher(OnboardRequest request) {
-        if (request == null) {
-            throw new BadRequestException("resource not found");
-        }
 
         Teacher teacher = new Teacher();
         teacher.setName(request.getName());

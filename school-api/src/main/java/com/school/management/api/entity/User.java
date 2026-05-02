@@ -30,6 +30,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "is_first_login")
+    private Boolean isFirstLogin;
+
     @Column(name = "role",nullable = false)
     private String role;
 

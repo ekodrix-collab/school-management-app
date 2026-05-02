@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
+import static com.school.management.api.service.mapper.MapperService.generateUserId;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -30,23 +32,17 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public AuthResponse login(LoginRequest request) {
-
-        // Authenticate via mobile + password
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getMobile(), request.getPassword()));
-
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMobile(), request.getPassword()));
         String token = jwtTokenProvider.generateToken(authentication);
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
         Date issuedAt = jwtTokenProvider.getIssuedAtFromToken(token);
         Date expiry = jwtTokenProvider.getExpiryFromToken(token);
 
         User user = userRepository.findByMobile(request.getMobile()).orElseThrow();
-
         return AuthResponse.builder()
                 .tokenType("Bearer")
                 .accessToken(token)
-                .userId(userDetails.getUserId())   // UUID user_id
+                .userId(userDetails.getUserId())
                 .role(userDetails.getRole())
                 .name(user.getName())
                 .issuedAt(issuedAt)
@@ -71,6 +67,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setEmail(request.getEmail());
         user.setRole(request.getRole());
+        user.setIsFirstLogin(true);
         user.setUpdatedAt(LocalDateTime.now());
         user.setCreatedAt(LocalDateTime.now());
         user.setUserId(userId);
@@ -99,7 +96,4 @@ public class AuthService {
                 .build();
     }
 
-    public UUID generateUserId() {
-        return UUID.randomUUID();
-    }
 }
