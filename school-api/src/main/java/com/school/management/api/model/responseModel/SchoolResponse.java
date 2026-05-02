@@ -13,5 +13,5 @@ public class SchoolResponse {
     private String schoolCode;
 
     @JsonProperty(value = "admin")
-    private AdminResponse admin;
+    private UserResponse admin;
 }

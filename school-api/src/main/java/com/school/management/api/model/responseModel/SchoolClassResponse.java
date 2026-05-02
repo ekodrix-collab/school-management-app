@@ -7,8 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class SchoolClassResponse {
-    @JsonProperty(value = "id")
-    private Long id;
+
     @JsonProperty(value = "display_name")
     private String displayName;
 
@@ -24,9 +23,4 @@ public class SchoolClassResponse {
     @JsonProperty(value = "is_active")
     private Boolean isActive = true;
 
-    @JsonProperty(value = "created_at")
-    private LocalDateTime createdAt;
-
-    @JsonProperty(value = "updated_at")
-    private LocalDateTime updatedAt;
 }

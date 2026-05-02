@@ -14,6 +14,9 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "student_id")
+    private String studentId;
+
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
@@ -31,6 +34,9 @@ public class Student {
 
     @Column(name = "blood_group",length = 5)
     private String bloodGroup;
+
+    @Column(name = "academic_year")
+    private String academicYear;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

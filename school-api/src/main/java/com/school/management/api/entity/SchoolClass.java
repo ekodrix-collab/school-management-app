@@ -14,6 +14,9 @@ public class SchoolClass {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "school_id")
+    private String schoolId;
+
     @Column(name = "standard", nullable = false)
     private String standard;        // "1", "LKG"
 

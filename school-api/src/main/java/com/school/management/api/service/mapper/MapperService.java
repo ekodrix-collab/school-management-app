@@ -2,10 +2,12 @@ package com.school.management.api.service.mapper;
 
 
 import com.school.management.api.constants.Constants;
+import com.school.management.api.entity.Parent;
 import com.school.management.api.entity.School;
 import com.school.management.api.entity.Teacher;
 import com.school.management.api.entity.User;
-import com.school.management.api.model.responseModel.AdminResponse;
+import com.school.management.api.model.responseModel.ParentResponse;
+import com.school.management.api.model.responseModel.UserResponse;
 import com.school.management.api.model.responseModel.OnBoardResponse;
 import com.school.management.api.model.responseModel.SchoolResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,19 +66,54 @@ public class MapperService {
         schoolResponse.setSchoolName(savedSchool.getSchoolName());
         schoolResponse.setSchoolCode(savedSchool.getSchoolCode());
 
-        AdminResponse adminResponse = new AdminResponse();
-        adminResponse.setMail(savedUser.getEmail());
-        adminResponse.setName(savedUser.getName());
-        adminResponse.setRole(savedUser.getRole());
-        adminResponse.setNumber(savedUser.getMobile());
+        UserResponse userResponse = new UserResponse();
+        userResponse.setMail(savedUser.getEmail());
+        userResponse.setName(savedUser.getName());
+        userResponse.setRole(savedUser.getRole());
+        userResponse.setNumber(savedUser.getMobile());
 
-        schoolResponse.setAdmin(adminResponse);
+        schoolResponse.setAdmin(userResponse);
 
         return schoolResponse;
     }
 
     public static String getAcademicYear() {
-        int year = LocalDate.now(ZoneId.of(Constants.INDIAN_TIME)).getYear();
-        return year + "-" + (year + 1);
+        LocalDate today = LocalDate.now(ZoneId.of(Constants.INDIAN_TIME));
+        int year = today.getYear();
+        int month = today.getMonthValue();
+
+        if (month < 6) {
+            return (year - 1) + "-" + year;
+        } else {
+            return year + "-" + (year + 1);
+        }
+    }
+    public UserResponse toUserResponse(User savedUser){
+        UserResponse userResponse = new UserResponse();
+        userResponse.setMail(savedUser.getEmail());
+        userResponse.setName(savedUser.getName());
+        userResponse.setRole(savedUser.getRole());
+        userResponse.setNumber(savedUser.getMobile());
+        return userResponse;
+
+    }
+
+
+    public ParentResponse toParentResponse(Parent saved) {
+
+        ParentResponse response = new ParentResponse();
+        response.setName(saved.getName());
+        response.setEmail(saved.getEmail());
+        response.setIsActive(saved.getIsActive());
+        response.setRole(saved.getRole());
+
+        if (saved.getStudentIds() != null && !saved.getStudentIds().isEmpty()) {
+            List<String> subjects = objectMapper.readValue(
+                    saved.getStudentIds(), new TypeReference<>() {
+                    });
+            response.setStudents(subjects);
+        }
+
+        return response;
     }
 }

@@ -62,10 +62,10 @@ public class SchoolService {
         UUID userId = generateUserId();
 
         User user = new User();
-        user.setName(request.getAdmin().getName());
-        user.setMobile(request.getAdmin().getPhone());
+        user.setName(request.getUserDetails().getName());
+        user.setMobile(request.getUserDetails().getPhone());
         user.setPassword(passwordEncoder.encode(Constants.DUMMY_PASSWORD));
-        user.setEmail(request.getAdmin().getEmail());
+        user.setEmail(request.getUserDetails().getEmail());
         user.setRole(Constants.ROLE_ADMIN);
         user.setIsFirstLogin(true);
         user.setUpdatedAt(LocalDateTime.now());
