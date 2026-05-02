@@ -36,6 +36,6 @@ public class SchoolRequestDto {
     @JsonProperty(value = "logo_url")
     private String logoUrl;
 
-    @JsonProperty(value = "admin")
-    private AdminRequestDto admin;
+    @JsonProperty(value = "user_details")
+    private UserRequestDto userDetails;
 }

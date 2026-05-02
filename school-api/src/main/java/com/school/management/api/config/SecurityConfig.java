@@ -43,6 +43,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/school/create").hasAuthority(Constants.ROLE_SUPER_ADMIN)
+                        .requestMatchers("/api/v1/school-class/create").hasAnyAuthority(Constants.ROLE_TEACHER,Constants.ROLE_ADMIN)
+                        .requestMatchers("/api/v1/user/create").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_TEACHER)
                         .requestMatchers("/api/v1/admin/**").hasAuthority(Constants.ROLE_ADMIN)
                         .requestMatchers("/api/v1/teacher/**").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_TEACHER)
                         .requestMatchers("/api/v1/student/**")
