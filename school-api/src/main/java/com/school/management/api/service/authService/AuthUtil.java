@@ -6,21 +6,25 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class AuthUtil {
 
-    public static String getCurrentUserId() {
+    public static UUID getCurrentUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated()) return null;
+
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new RuntimeException("User not authenticated");
+        }
 
         Object principal = auth.getPrincipal();
-        if (principal instanceof CustomUserDetails) {
-            return ((CustomUserDetails) principal).getUserId().toString();
+
+        if (principal instanceof CustomUserDetails userDetails) {
+            return userDetails.getUserId(); // already UUID ✅
         }
-        if (principal instanceof String) {
-            return (String) principal;
-        }
-        return principal.toString();
+
+        throw new RuntimeException("Invalid principal type");
     }
 
     public static String  getCurrentRole() {

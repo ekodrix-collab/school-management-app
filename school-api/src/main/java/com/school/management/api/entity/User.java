@@ -18,6 +18,9 @@ public class User {
     @Column(name = "user_id",unique = true)
     private UUID userId;
 
+    @Column(name = "school_id")
+    private String schoolId;
+
     @Column(name = "name", nullable = false)
     private String name;
 

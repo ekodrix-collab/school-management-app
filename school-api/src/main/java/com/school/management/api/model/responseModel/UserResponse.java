@@ -3,6 +3,8 @@ package com.school.management.api.model.responseModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class UserResponse {
 
@@ -17,5 +19,8 @@ public class UserResponse {
 
     @JsonProperty(value = "number")
     private String number;
+
+    @JsonProperty(value = "user_id")
+    private UUID userId;
 
 }

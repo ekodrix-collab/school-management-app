@@ -4,11 +4,8 @@ import com.school.management.api.entity.SchoolClass;
 import com.school.management.api.model.requstModel.SchoolClassRequest;
 import com.school.management.api.model.responseModel.SchoolClassResponse;
 import com.school.management.api.repository.SchoolClassRepository;
-
-import com.school.management.api.security.CustomUserDetails;
-import com.school.management.api.service.authService.AuthUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,6 +20,7 @@ public class SchoolClassService {
     @Autowired
     private SchoolClassRepository schoolClassRepository;
 
+    @Transactional
     public SchoolClassResponse createClass(SchoolClassRequest request) {
 
         SchoolClass sc = new SchoolClass();

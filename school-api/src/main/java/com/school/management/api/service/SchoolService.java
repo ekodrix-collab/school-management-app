@@ -38,13 +38,13 @@ public class SchoolService {
     @Transactional
     public SchoolResponse createSchool(SchoolRequestDto request) {
 
-        if (schoolRepository.existsBySchoolCode(request.getSchoolCode())) {
+        if (schoolRepository.existsBySchoolId(request.getSchoolCode())) {
             throw new ResourceNotFoundException("School code already exists");
         }
 
         School school = new School();
         school.setSchoolName(request.getSchoolName());
-        school.setSchoolCode(request.getSchoolCode());
+        school.setSchoolId(request.getSchoolCode());
         school.setEmail(request.getEmail());
         school.setPhone(request.getPhone());
         school.setAddress(request.getAddress());
@@ -62,6 +62,7 @@ public class SchoolService {
         UUID userId = generateUserId();
 
         User user = new User();
+        user.setSchoolId(savedSchool.getSchoolId());
         user.setName(request.getUserDetails().getName());
         user.setMobile(request.getUserDetails().getPhone());
         user.setPassword(passwordEncoder.encode(Constants.DUMMY_PASSWORD));

@@ -15,11 +15,11 @@ public class School {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "school_id", nullable = false, unique = true, length = 20)
+    private String schoolId;
+
     @Column(name = "school_name", nullable = false)
     private String schoolName;
-
-    @Column(name = "school_code", nullable = false, unique = true, length = 20)
-    private String schoolCode;
 
     @Column(name = "email", nullable = false)
     private String email;

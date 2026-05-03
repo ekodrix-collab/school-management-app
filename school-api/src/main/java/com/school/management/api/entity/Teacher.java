@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -14,6 +15,15 @@ public class Teacher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "teacher_id")
+    private UUID teacherId;
+
+    @Column(name = "class_data", columnDefinition = "TEXT")
+    private String classId;
+
+    @Column(name = "school_id", nullable = false)
+    private String schoolId;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -26,12 +36,6 @@ public class Teacher {
 
     @Column(name = "subject", nullable = false, columnDefinition = "TEXT")
     private String subject;
-
-    @Column(name = "class_data", columnDefinition = "TEXT")
-    private String classId;
-
-    @Column(name = "school_id", nullable = false)
-    private String schoolId;
 
     @Column(name = "role")
     private String role;
