@@ -17,6 +17,12 @@ public class SchoolClass {
     @Column(name = "school_id")
     private String schoolId;
 
+    @Column(name = "class_id")
+    private String classId;
+
+    @Column(name = "academic_year_id")
+    private String academicYearId; // "2025-2026"
+
     @Column(name = "standard", nullable = false)
     private String standard;        // "1", "LKG"
 
@@ -31,9 +37,6 @@ public class SchoolClass {
 
     @Column(name = "class_teacher_id")
     private String classTeacherId;
-
-    @Column(name = "academic_year_id")
-    private String academicYearId; // "2025-2026"
 
     @Column(name = "is_active")
     private Boolean isActive = true;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class ParentResponse {
@@ -13,6 +14,9 @@ public class ParentResponse {
 
     @JsonProperty(value = "email")
     private String email;
+
+    @JsonProperty(value = "parent_id")
+    private UUID parentId;
 
     @JsonProperty(value = "role")
     private String role;

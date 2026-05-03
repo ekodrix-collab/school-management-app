@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -16,7 +17,7 @@ public class Parent {
     private Long id;
 
     @Column(name = "parent_id")
-    private String parentId;
+    private UUID parentId;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -26,9 +27,6 @@ public class Parent {
 
     @Column(name = "mobile", nullable = false)
     private String mobile;
-
-    @Column(name = "student_ids",columnDefinition = "TEXT")
-    private String studentIds;    //connected to student table
 
     @Column(name = "alternate_mobile")
     private String alternateMobile;

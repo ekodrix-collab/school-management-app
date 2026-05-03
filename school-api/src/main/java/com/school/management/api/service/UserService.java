@@ -8,6 +8,7 @@ import com.school.management.api.repository.UserRepository;
 import com.school.management.api.service.mapper.MapperService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,9 @@ public class UserService {
     @Autowired
     MapperService mapperService;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Transactional
     public UserResponse createUser(UserRequestDto request){
 
@@ -32,11 +36,12 @@ public class UserService {
         user.setMobile(request.getPhone());
         user.setRole(request.getRole());
         user.setIsFirstLogin(true);
+        user.setSchoolId(request.getSchoolId());
         user.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
         user.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
         user.setEmail(request.getEmail());
         user.setUserId(generateUserId());
-        user.setPassword(Constants.DUMMY_PASSWORD);
+        user.setPassword(passwordEncoder.encode(Constants.DUMMY_PASSWORD));
 
         User savedUser = userRepository.save(user);
         return mapperService.toUserResponse(savedUser);

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -16,6 +17,15 @@ public class Student {
 
     @Column(name = "student_id")
     private String studentId;
+
+    @Column(name = "class_id")
+    private String classId;
+
+    @Column(name = "parent_id")
+    private UUID parentId;  //user ID
+
+    @Column(name = "school_id")
+    private String schoolID;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;

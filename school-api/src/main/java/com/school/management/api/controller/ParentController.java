@@ -1,7 +1,6 @@
 package com.school.management.api.controller;
 
 import com.school.management.api.constants.Constants;
-import com.school.management.api.entity.Parent;
 import com.school.management.api.model.requstModel.ParentRequestDto;
 import com.school.management.api.model.responseModel.ParentResponse;
 import com.school.management.api.service.ParentService;

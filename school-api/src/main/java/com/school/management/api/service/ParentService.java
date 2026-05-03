@@ -4,7 +4,6 @@ import com.school.management.api.constants.Constants;
 import com.school.management.api.entity.Parent;
 import com.school.management.api.model.requstModel.ParentRequestDto;
 import com.school.management.api.model.responseModel.ParentResponse;
-import com.school.management.api.model.responseModel.UserResponse;
 import com.school.management.api.repository.ParentRepository;
 import com.school.management.api.service.mapper.MapperService;
 import jakarta.transaction.Transactional;
@@ -28,14 +27,24 @@ public class ParentService {
     @Autowired
     MapperService mapperService;
 
-    @Autowired
-    ObjectMapper objectMapper;
-
 
     @Transactional
     public ParentResponse createParent(ParentRequestDto request) {
 
-        Parent parent = new Parent();
+        Parent parent = null;
+        if(request.getMobile() != null){
+            parent = parentRepository.findByMobile(request.getMobile()).orElse(null);
+        }
+
+        if (parent == null) {
+            parent = new Parent();
+
+            parent.setPassword(passwordEncoder.encode(Constants.DUMMY_PASSWORD));
+            parent.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
+            parent.setIsFirstLogin(true);
+            parent.setParentId(MapperService.generateUserId());
+        }
+
         parent.setName(request.getName());
         parent.setSpouseName(request.getSpouseName());
         parent.setMobile(request.getMobile());
@@ -49,19 +58,8 @@ public class ParentService {
         parent.setState(request.getState());
         parent.setPincode(request.getPincode());
         parent.setLandmark(request.getLandmark());
-        parent.setIsFirstLogin(true);
         parent.setIsActive(true);
-        try {
-            if (request.getStudentIds() != null && !request.getStudentIds().isEmpty()) {
-                String studentIds = objectMapper.writeValueAsString(request.getStudentIds());
-                parent.setStudentIds(studentIds);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Error converting studentIds", e);
-        }
-        parent.setPassword(passwordEncoder.encode(Constants.DUMMY_PASSWORD));
         parent.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
-        parent.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
 
         Parent saved = parentRepository.save(parent);
 
