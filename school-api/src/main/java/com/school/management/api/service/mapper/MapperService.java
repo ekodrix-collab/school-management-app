@@ -2,14 +2,8 @@ package com.school.management.api.service.mapper;
 
 
 import com.school.management.api.constants.Constants;
-import com.school.management.api.entity.Parent;
-import com.school.management.api.entity.School;
-import com.school.management.api.entity.Teacher;
-import com.school.management.api.entity.User;
-import com.school.management.api.model.responseModel.ParentResponse;
-import com.school.management.api.model.responseModel.UserResponse;
-import com.school.management.api.model.responseModel.OnBoardResponse;
-import com.school.management.api.model.responseModel.SchoolResponse;
+import com.school.management.api.entity.*;
+import com.school.management.api.model.responseModel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tools.jackson.core.type.TypeReference;
@@ -26,14 +20,9 @@ public class MapperService {
     @Autowired
     ObjectMapper objectMapper;
 
-    public static UUID generateUserId() {
-        return UUID.randomUUID();
-    }
-
     public OnBoardResponse toTeacherResponse(Teacher teacher) {
 
         OnBoardResponse response = new OnBoardResponse();
-
         response.setSuccess(true);
         response.setMessage("Teacher onboarded successfully");
         response.setName(teacher.getName());
@@ -56,25 +45,24 @@ public class MapperService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to deserialize teacher fields", e);
         }
-
         return response;
+
     }
 
     public SchoolResponse toSchoolResponse(School savedSchool, User savedUser) {
 
         SchoolResponse schoolResponse = new SchoolResponse();
         schoolResponse.setSchoolName(savedSchool.getSchoolName());
-        schoolResponse.setSchoolCode(savedSchool.getSchoolCode());
+        schoolResponse.setSchoolCode(savedSchool.getSchoolId());
 
         UserResponse userResponse = new UserResponse();
         userResponse.setMail(savedUser.getEmail());
         userResponse.setName(savedUser.getName());
         userResponse.setRole(savedUser.getRole());
         userResponse.setNumber(savedUser.getMobile());
-
         schoolResponse.setAdmin(userResponse);
-
         return schoolResponse;
+
     }
 
     public static String getAcademicYear() {
@@ -88,6 +76,7 @@ public class MapperService {
             return year + "-" + (year + 1);
         }
     }
+
     public UserResponse toUserResponse(User savedUser){
         UserResponse userResponse = new UserResponse();
         userResponse.setMail(savedUser.getEmail());
@@ -98,22 +87,35 @@ public class MapperService {
 
     }
 
+    public static UUID generateUserId() {
+        return UUID.randomUUID();
+    }
 
     public ParentResponse toParentResponse(Parent saved) {
-
         ParentResponse response = new ParentResponse();
         response.setName(saved.getName());
         response.setEmail(saved.getEmail());
         response.setIsActive(saved.getIsActive());
         response.setRole(saved.getRole());
+        response.setParentId(saved.getParentId());
+        return response;
 
-        if (saved.getStudentIds() != null && !saved.getStudentIds().isEmpty()) {
-            List<String> subjects = objectMapper.readValue(
-                    saved.getStudentIds(), new TypeReference<>() {
-                    });
-            response.setStudents(subjects);
+    }
+
+    public StudentResponseDto toCreateStudent(Student student) {
+
+        if (student == null) {
+            return null;
         }
 
-        return response;
+        StudentResponseDto dto = new StudentResponseDto();
+        dto.setName(student.getName());
+        dto.setAdmissionNumber(student.getAdmissionNumber());
+        dto.setRollNumber(student.getRollNumber());
+        dto.setDateOfBirth(student.getDateOfBirth());
+        dto.setGender(student.getGender());
+        dto.setBloodGroup(student.getBloodGroup());
+        return dto;
     }
+
 }

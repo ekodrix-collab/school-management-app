@@ -2,6 +2,7 @@ package com.school.management.api.repository;
 
 import com.school.management.api.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -14,8 +15,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     Optional<User> findByUserId(UUID userId);
 
-    boolean existsByMobile(String mobile);
-
-    boolean existsByEmail(String email);
-
+    @Query("SELECT u FROM User u WHERE u.userId = :userId")
+    User findUserId(UUID userId);
 }

@@ -4,12 +4,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class ParentRequestDto {
 
     @JsonProperty(value = "name")
     private String name;
+
+    @JsonProperty(value = "parent_id")
+    private UUID parentId;
 
     @JsonProperty(value = "spouse_name")
     private String spouseName;

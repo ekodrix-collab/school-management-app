@@ -1,10 +1,10 @@
 package com.school.management.api.model.requstModel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 public class StudentRequestDto {
@@ -21,9 +21,24 @@ public class StudentRequestDto {
     @JsonProperty(value="date_of_birth")
     private LocalDate dateOfBirth;
 
+    @JsonProperty(value = "class_id")
+    private String classId;
+
+    @JsonProperty(value = "school_id")
+    private String schoolId;
+
     @JsonProperty(value ="gender")
     private String gender;
 
     @JsonProperty(value ="blood_group")
     private String bloodGroup;
+
+    @JsonProperty(value = "user_details")
+    private UserRequestDto userDetails;
+
+    @JsonProperty(value = "parent_details")
+    private ParentRequestDto parentDetails;
+
+    @JsonProperty(value = "user_id")
+    private UUID userId;
 }

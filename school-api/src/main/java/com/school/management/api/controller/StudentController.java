@@ -21,23 +21,24 @@ public class StudentController {
         return studentService.createStudent(requestDto);
     }
 
-    @PutMapping("/{id}")
-    public StudentResponseDto updateStudent(@PathVariable Long id,@RequestBody StudentRequestDto requestDto){
-        return studentService.updateStudent(id,requestDto);
-    }
+//    @PutMapping("/{id}")
+//    public StudentResponseDto updateStudent(@PathVariable Long id,@RequestBody StudentRequestDto requestDto){
+//        return studentService.updateStudent(id,requestDto);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public String deleteStudent(@PathVariable Long id){
+//        return studentService.deleteStudent(id);
+//    }
+//
+//    @GetMapping("/all")
+//    public List<StudentResponseDto>getAllStudent(){
+//        return studentService.getAllStudents();
+//    }
+//
+//    @GetMapping("/{id}")
+//    public StudentResponseDto getStudentById(@PathVariable Long id) {
+//        return studentService.getStudentById(id);
+//    }
 
-    @DeleteMapping("/{id}")
-    public String deleteStudent(@PathVariable Long id){
-        return studentService.deleteStudent(id);
-    }
-
-    @GetMapping("/all")
-    public List<StudentResponseDto>getAllStudent(){
-        return studentService.getAllStudents();
-    }
-
-    @GetMapping("/{id}")
-    public StudentResponseDto getStudentById(@PathVariable Long id) {
-        return studentService.getStudentById(id);
-    }
 }
