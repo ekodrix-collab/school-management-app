@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(Constants.PARANT_ROUTE)
+@RequestMapping(Constants.PARENT_ROUTE)
 public class ParentController {
 
     @Autowired
