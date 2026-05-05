@@ -20,6 +20,38 @@ public class MapperService {
     @Autowired
     ObjectMapper objectMapper;
 
+    public TeacherResponseDto toTeacherResponseDto(Teacher teacher) {
+        TeacherResponseDto response = new TeacherResponseDto();
+        response.setTeacherId(teacher.getTeacherId());
+        response.setName(teacher.getName());
+        response.setEmail(teacher.getEmail());
+        response.setMobile(teacher.getMobile());
+        response.setIsActive(teacher.getIsActive());
+        response.setRole(teacher.getRole());
+
+        try {
+            if (teacher.getSubject() != null && !teacher.getSubject().isEmpty()) {
+                List<String> subjects = objectMapper.readValue(
+                        teacher.getSubject(), new TypeReference<>() {
+                        });
+                response.setSubject(subjects);
+            }
+            if (teacher.getClassId() != null && !teacher.getClassId().isEmpty()) {
+                List<String> classId = objectMapper.readValue(
+                        teacher.getClassId(), new TypeReference<>() {
+                        });
+                response.setClasses(classId);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to deserialize teacher fields", e);
+        }
+        return response;
+    }
+
+    public List<TeacherResponseDto> toTeacherResponseDtoList(List<Teacher> teachers) {
+        return teachers.stream().map(this::toTeacherResponseDto).toList();
+    }
+
     public OnBoardResponse toTeacherResponse(Teacher teacher) {
 
         OnBoardResponse response = new OnBoardResponse();
