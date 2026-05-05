@@ -48,6 +48,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/admin/**").hasAuthority(Constants.ROLE_ADMIN)
                         .requestMatchers("/api/v1/attendance/**").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_TEACHER)
                         .requestMatchers("/api/v1/teacher/**").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_TEACHER)
+                        .requestMatchers("/api/v1/mark/**").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_TEACHER)
+                        .requestMatchers("/api/v1/subject/**").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_TEACHER)
                         .requestMatchers("/api/v1/student/**")
                         .hasAnyAuthority(Constants.ROLE_SUPER_ADMIN, Constants.ROLE_ADMIN,Constants.ROLE_PARENT,Constants.ROLE_TEACHER)
                         .anyRequest().permitAll())
