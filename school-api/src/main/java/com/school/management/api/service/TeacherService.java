@@ -15,9 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
+import com.school.management.api.model.responseModel.TeacherResponseDto;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -94,5 +96,66 @@ public class TeacherService {
 
     }
 
+    public List<TeacherResponseDto> getAllTeachers() {
+        List<Teacher> teachers = teacherRepository.findAllTeachers();
+        return mapperService.toTeacherResponseDtoList(teachers);
+    }
+
+    public TeacherResponseDto getTeacherByTeacherId(UUID teacherId) {
+        Teacher teacher = teacherRepository.findByTeacherId(teacherId)
+                .orElseThrow(() -> new BadRequestException("Teacher not found"));
+        return mapperService.toTeacherResponseDto(teacher);
+    }
+
+    @Transactional
+    public TeacherResponseDto updateTeacher(UUID teacherId, OnboardRequest request) {
+        Teacher teacher = teacherRepository.findByTeacherId(teacherId)
+                .orElseThrow(() -> new BadRequestException("Teacher not found"));
+
+        teacher.setName(request.getName());
+        teacher.setEmail(request.getEmail());
+        teacher.setMobile(request.getMobile());
+        teacher.setRole(request.getRole());
+        teacher.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
+
+        try {
+            if (request.getSubject() != null && !request.getSubject().isEmpty()) {
+                String subject = objectMapper.writeValueAsString(request.getSubject());
+                teacher.setSubject(subject);
+            }
+
+            if (request.getClassIds() != null && !request.getClassIds().isEmpty()) {
+                String classIds = objectMapper.writeValueAsString(request.getClassIds());
+                teacher.setClassId(classIds);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to serialize teacher fields", e);
+        }
+
+        User user = userRepository.findByUserId(teacherId)
+                .orElseThrow(() -> new BadRequestException("User record not found for teacher"));
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setMobile(request.getMobile());
+        user.setRole(request.getRole());
+        user.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
+        userRepository.save(user);
+
+        Teacher updatedTeacher = teacherRepository.save(teacher);
+        return mapperService.toTeacherResponseDto(updatedTeacher);
+    }
+
+    @Transactional
+    public String deleteTeacher(UUID teacherId) {
+        Teacher teacher = teacherRepository.findByTeacherId(teacherId)
+                .orElseThrow(() -> new BadRequestException("Teacher not found"));
+
+        User user = userRepository.findByUserId(teacherId)
+                .orElseThrow(() -> new BadRequestException("User record not found for teacher"));
+        userRepository.delete(user);
+
+        teacherRepository.delete(teacher);
+        return "Teacher deleted successfully";
+    }
 
 }
