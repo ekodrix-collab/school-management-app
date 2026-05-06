@@ -15,6 +15,9 @@ public class Subject {
     @Column(name = "subject_id", unique = true, nullable = false)
     private String subjectId;
 
+    @Column(name = "school_id")
+    private String schoolId;
+
     @Column(name = "name", nullable = false)
     private String name;
 

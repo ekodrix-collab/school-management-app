@@ -27,6 +27,9 @@ public class AuthResponse {
     @JsonProperty(value = "role")
     private String role;
 
+    @JsonProperty(value = "school_id")
+    private String schoolId;
+
     @JsonProperty(value = "name")
     private String name;
 

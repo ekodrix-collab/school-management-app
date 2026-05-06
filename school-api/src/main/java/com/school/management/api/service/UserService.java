@@ -5,6 +5,7 @@ import com.school.management.api.entity.User;
 import com.school.management.api.model.requstModel.UserRequestDto;
 import com.school.management.api.model.responseModel.UserResponse;
 import com.school.management.api.repository.UserRepository;
+import com.school.management.api.service.authService.AuthUtil;
 import com.school.management.api.service.mapper.MapperService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,14 @@ public class UserService {
     @Transactional
     public UserResponse createUser(UserRequestDto request){
 
+        String schoolId = AuthUtil.getCurrentSchoolId();
+
         User user = new User();
         user.setName(request.getName());
         user.setMobile(request.getPhone());
         user.setRole(request.getRole());
         user.setIsFirstLogin(true);
-        user.setSchoolId(request.getSchoolId());
+        user.setSchoolId(schoolId);
         user.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
         user.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
         user.setEmail(request.getEmail());

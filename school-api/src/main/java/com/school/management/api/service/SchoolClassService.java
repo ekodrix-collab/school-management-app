@@ -5,6 +5,7 @@ import com.school.management.api.exception.BadRequestException;
 import com.school.management.api.model.requstModel.SchoolClassRequest;
 import com.school.management.api.model.responseModel.SchoolClassResponse;
 import com.school.management.api.repository.SchoolClassRepository;
+import com.school.management.api.service.authService.AuthUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,10 @@ public class SchoolClassService {
     @Transactional
     public SchoolClassResponse createClass(SchoolClassRequest request) {
 
+        String schoolId = AuthUtil.getCurrentSchoolId();
         SchoolClass sc = new SchoolClass();
 
+        sc.setSchoolId(schoolId);
         sc.setStandard(request.getStandard());
         sc.setDivision(request.getDivision());
         sc.setCapacity(request.getCapacity());

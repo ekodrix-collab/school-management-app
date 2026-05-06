@@ -21,4 +21,6 @@ public class RegisterRequest {
     @JsonProperty(value = "role")
     private String role;
 
+    @JsonProperty(value = "school_id")
+    private String schoolId;
 }

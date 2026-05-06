@@ -15,6 +15,9 @@ public class Exam {
     @Column(name = "exam_id", unique = true, nullable = false)
     private String examId;
 
+    @Column(name = "school_id")
+    private String schoolId;
+
     @Column(name = "name", nullable = false)
     private String name;
 

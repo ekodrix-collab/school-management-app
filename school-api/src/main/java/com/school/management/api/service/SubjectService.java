@@ -4,6 +4,7 @@ import com.school.management.api.entity.Subject;
 import com.school.management.api.model.requstModel.SubjectRequestDto;
 import com.school.management.api.model.responseModel.SubjectResponseDto;
 import com.school.management.api.repository.SubjectRepository;
+import com.school.management.api.service.authService.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,10 @@ public class SubjectService {
         if (subjectRepository.findBySubjectId(requestDto.getSubjectId()).isPresent()) {
             throw new RuntimeException("Subject with ID " + requestDto.getSubjectId() + " already exists.");
         }
+        String schoolId = AuthUtil.getCurrentSchoolId();
 
         Subject subject = new Subject();
+        subject.setSchoolId(schoolId);
         subject.setSubjectId(requestDto.getSubjectId());
         subject.setName(requestDto.getName());
         subject.setClassId(requestDto.getClassId());

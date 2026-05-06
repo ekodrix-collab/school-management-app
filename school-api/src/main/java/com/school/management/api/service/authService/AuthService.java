@@ -44,6 +44,7 @@ public class AuthService {
                 .accessToken(token)
                 .userId(userDetails.getUserId())
                 .role(userDetails.getRole())
+                .schoolId(userDetails.getSchoolId())
                 .name(user.getName())
                 .issuedAt(issuedAt)
                 .expiryDate(expiry)
@@ -67,6 +68,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setEmail(request.getEmail());
         user.setRole(request.getRole());
+        user.setSchoolId(request.getSchoolId());
         user.setIsFirstLogin(true);
         user.setUpdatedAt(LocalDateTime.now());
         user.setCreatedAt(LocalDateTime.now());
@@ -89,6 +91,7 @@ public class AuthService {
                 .accessToken(token)
                 .userId(userDetails.getUserId())
                 .role(userDetails.getRole())
+                .schoolId(userDetails.getSchoolId())
                 .name(user.getName())
                 .issuedAt(issuedAt)
                 .expiryDate(expiry)

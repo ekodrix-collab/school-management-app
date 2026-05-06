@@ -15,6 +15,9 @@ public class ParentRequestDto {
     @JsonProperty(value = "parent_id")
     private UUID parentId;
 
+    @JsonProperty(value = "school_id")
+    private String schoolId;
+
     @JsonProperty(value = "spouse_name")
     private String spouseName;
 

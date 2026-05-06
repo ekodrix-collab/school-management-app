@@ -4,6 +4,7 @@ import com.school.management.api.entity.Exam;
 import com.school.management.api.model.requstModel.ExamRequestDto;
 import com.school.management.api.model.responseModel.ExamResponseDto;
 import com.school.management.api.repository.ExamRepository;
+import com.school.management.api.service.authService.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,10 @@ public class ExamService {
             throw new RuntimeException("Exam with ID " + requestDto.getExamId() + " already exists.");
         }
 
+        String schoolId = AuthUtil.getCurrentSchoolId();
+
         Exam exam = new Exam();
+        exam.setSchoolId(schoolId);
         exam.setExamId(requestDto.getExamId());
         exam.setName(requestDto.getName());
         exam.setType(requestDto.getType());
