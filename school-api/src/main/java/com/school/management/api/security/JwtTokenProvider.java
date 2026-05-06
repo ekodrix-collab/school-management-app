@@ -39,6 +39,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(user.getUserId().toString())
                 .claim("userId", user.getUserId().toString())
+                .claim("schoolId", user.getSchoolId())
                 .claim("role", user.getRole())
                 .setIssuedAt(now)
                 .setExpiration(expiry)
@@ -52,6 +53,10 @@ public class JwtTokenProvider {
 
     public String getRoleFromToken(String token) {
         return parseClaims(token).get("role", String.class);
+    }
+
+    public String getSchoolIdFromToken(String token) {
+        return parseClaims(token).get("schoolId", String.class);
     }
 
     public Date getIssuedAtFromToken(String token) {

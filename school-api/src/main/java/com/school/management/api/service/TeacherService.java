@@ -43,12 +43,12 @@ public class TeacherService {
     @Transactional
     public OnBoardResponse createTeacher(OnboardRequest request) {
 
-        UUID userId = AuthUtil.getCurrentUserId();
-        if(userId == null){
-            throw new BadRequestException("Admin can only create admission");
+        String userRole = AuthUtil.getCurrentRole();
+        if (!Constants.ROLE_ADMIN.equalsIgnoreCase(userRole)) {
+            throw new BadRequestException("Only admin can create admission");
         }
-        User users = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new BadRequestException("User not found"));
+
+        String schoolId = AuthUtil.getCurrentSchoolId();
 
         Teacher teacher = new Teacher();
         teacher.setName(request.getName());
@@ -57,7 +57,7 @@ public class TeacherService {
         teacher.setRole(request.getRole());
         teacher.setIsActive(true);
         teacher.setIsFirstLogin(true);
-        teacher.setSchoolId(request.getSchoolId());
+        teacher.setSchoolId(schoolId);
         teacher.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
         teacher.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
 
@@ -77,7 +77,7 @@ public class TeacherService {
 
         User user = new User();
         user.setName(request.getName());
-        user.setSchoolId(users.getSchoolId());
+        user.setSchoolId(schoolId);
         user.setMobile(request.getMobile());
         user.setUserId(MapperService.generateUserId());
         user.setPassword(passwordEncoder.encode(Constants.DUMMY_PASSWORD));

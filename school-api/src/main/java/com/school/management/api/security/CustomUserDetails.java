@@ -12,6 +12,7 @@ import java.util.UUID;
 public class CustomUserDetails implements UserDetails {
 
     private final UUID userId;
+    private final String schoolId;
     private final String mobile;
     private final String password;
     private final String role;
@@ -19,6 +20,7 @@ public class CustomUserDetails implements UserDetails {
 
     public CustomUserDetails(User user) {
         this.userId = user.getUserId();
+        this.schoolId = user.getSchoolId();
         this.mobile = user.getMobile();
         this.password = user.getPassword();
         this.role = user.getRole();
@@ -26,6 +28,10 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public UUID getUserId() {return userId;}
+
+    public String getSchoolId() {
+        return schoolId;
+    }
 
     public String getRole() {
         return role;

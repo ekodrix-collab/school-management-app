@@ -5,6 +5,7 @@ import com.school.management.api.model.requstModel.StudentRequestDto;
 import com.school.management.api.model.responseModel.StudentResponseDto;
 import com.school.management.api.repository.StudentRepository;
 import com.school.management.api.repository.UserRepository;
+import com.school.management.api.service.authService.AuthUtil;
 import com.school.management.api.service.mapper.MapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,12 @@ public class StudentService {
 
     public StudentResponseDto createStudent(StudentRequestDto requestDto){
 
+        String schoolId = AuthUtil.getCurrentSchoolId();
+
         Student student = new Student();
         student.setName(requestDto.getName());
-        student.setStudentId(requestDto.getSchoolId() + "_" + requestDto.getAdmissionNumber());
-        student.setSchoolID(requestDto.getSchoolId());
+        student.setStudentId(schoolId + "_" + requestDto.getAdmissionNumber());
+        student.setSchoolId(schoolId);
         student.setAdmissionNumber(requestDto.getAdmissionNumber());
         student.setRollNumber(requestDto.getRollNumber());
         student.setDateOfBirth(requestDto.getDateOfBirth());

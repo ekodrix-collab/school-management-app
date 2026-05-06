@@ -27,6 +27,9 @@ public class Mark {
     @Column(name = "exam_id", nullable = false)
     private String examId;
 
+    @Column(name = "school_id")
+    private String schoolId;
+
     @Column(name = "academic_year_id", nullable = false)
     private String academicYearId;
 

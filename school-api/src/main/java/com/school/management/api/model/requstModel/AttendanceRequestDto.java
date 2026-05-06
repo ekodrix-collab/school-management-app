@@ -19,4 +19,6 @@ public class AttendanceRequestDto {
     @JsonProperty(value = "status")
     private String status; // PRESENT / ABSENT / LEAVE
 
+
+
 }

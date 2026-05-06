@@ -6,6 +6,7 @@ import com.school.management.api.model.responseModel.MarkResponseDto;
 import com.school.management.api.repository.ExamRepository;
 import com.school.management.api.repository.MarkRepository;
 import com.school.management.api.repository.SubjectRepository;
+import com.school.management.api.service.authService.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -94,7 +95,10 @@ public class MarkService {
                         ", Exam ID: " + request.getExamId());
             }
 
+            String schoolId = AuthUtil.getCurrentSchoolId();
+
             Mark mark = new Mark();
+            mark.setSchoolId(schoolId);
             mark.setStudentId(request.getStudentId());
             mark.setClassId(request.getClassId());
             mark.setSubjectId(request.getSubjectId());
