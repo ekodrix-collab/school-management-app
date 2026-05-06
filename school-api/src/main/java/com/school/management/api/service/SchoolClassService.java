@@ -1,6 +1,7 @@
 package com.school.management.api.service;
 
 import com.school.management.api.entity.SchoolClass;
+import com.school.management.api.exception.BadRequestException;
 import com.school.management.api.model.requstModel.SchoolClassRequest;
 import com.school.management.api.model.responseModel.SchoolClassResponse;
 import com.school.management.api.repository.SchoolClassRepository;
@@ -28,7 +29,7 @@ public class SchoolClassService {
         sc.setStandard(request.getStandard());
         sc.setDivision(request.getDivision());
         sc.setCapacity(request.getCapacity());
-        sc.setDisplayName(request.getStandard() + "-" + request.getDivision());
+        sc.setClassId(request.getStandard() + "-" + request.getDivision());
         sc.setClassTeacherId(request.getClassTeacherId());
         sc.setAcademicYearId(getAcademicYear());
         sc.setIsActive(true);
@@ -61,7 +62,7 @@ public class SchoolClassService {
 
         sc.setStandard(request.getStandard());
         sc.setDivision(request.getDivision());
-        sc.setDisplayName(request.getStandard() + "-" + request.getDivision());
+        sc.setClassId(request.getStandard() + "-" + request.getDivision());
         sc.setClassTeacherId(request.getClassTeacherId());
         sc.setUpdatedAt(LocalDateTime.now());
 
@@ -70,21 +71,25 @@ public class SchoolClassService {
         return mapToResponse(updated);
     }
 
-    public void deleteClass(Long id) {
-        SchoolClass sc = schoolClassRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Class not found"));
+    public void deleteClass(String classId) {
+        int deleted = schoolClassRepository.deleteByClassId(classId);
 
-        schoolClassRepository.delete(sc);
+        if (deleted == 0) {
+            throw new RuntimeException("Class not found");
+        }
     }
 
     private SchoolClassResponse mapToResponse(SchoolClass schoolclass) {
         SchoolClassResponse res = new SchoolClassResponse();
 
-        res.setDisplayName(schoolclass.getDisplayName());
+        res.setClassId(schoolclass.getClassId());
+        res.setDisplayName(schoolclass.getClassId());
         res.setCapacity(schoolclass.getCapacity());
         res.setClassTeacherId(schoolclass.getClassTeacherId());
         res.setAcademicYearID(schoolclass.getAcademicYearId());
         res.setIsActive(schoolclass.getIsActive());
+        res.setDivision(schoolclass.getDivision());
+        res.setStandard(schoolclass.getStandard());
 
         return res;
     }

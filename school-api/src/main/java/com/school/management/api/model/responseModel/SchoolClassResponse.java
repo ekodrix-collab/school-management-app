@@ -23,4 +23,13 @@ public class SchoolClassResponse {
     @JsonProperty(value = "is_active")
     private Boolean isActive = true;
 
+    @JsonProperty(value = "division")
+    private String division;
+
+    @JsonProperty(value = "standard")
+    private String standard;
+
+    @JsonProperty(value = "class_id")
+    private String classId;
+
 }
