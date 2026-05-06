@@ -17,9 +17,6 @@ public class SchoolClass {
     @Column(name = "school_id")
     private String schoolId;
 
-    @Column(name = "class_id")
-    private String classId;
-
     @Column(name = "academic_year_id")
     private String academicYearId; // "2025-2026"
 
@@ -29,8 +26,8 @@ public class SchoolClass {
     @Column(name = "division")
     private String division;      // "A", "B"
 
-    @Column(name = "display_name")
-    private String displayName;  // "1-A"
+    @Column(name = "class_id")
+    private String classId;  // "1-A"
 
     @Column(name = "capacity")
     private Integer capacity;
