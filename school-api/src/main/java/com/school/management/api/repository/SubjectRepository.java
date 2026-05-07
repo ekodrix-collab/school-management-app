@@ -9,6 +9,11 @@ import java.util.Optional;
 
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
+
     Optional<Subject> findBySubjectId(String subjectId);
+
     List<Subject> findBySubjectIdIn(List<String> subjectIds);
+
+    List<Subject> findAllBySubjectIdIn(List<String> subjectIds);
+
 }

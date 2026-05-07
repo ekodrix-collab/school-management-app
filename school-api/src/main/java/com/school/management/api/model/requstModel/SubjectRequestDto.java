@@ -6,12 +6,7 @@ import lombok.Data;
 @Data
 public class SubjectRequestDto {
 
-    @JsonProperty("subject_id")
-    private String subjectId;
-
+    @JsonProperty(value = "name")
     private String name;
-
-    @JsonProperty("class_id")
-    private String classId;
 
 }

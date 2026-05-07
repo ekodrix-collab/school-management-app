@@ -1,11 +1,14 @@
 package com.school.management.api.service;
 
 import com.school.management.api.entity.Subject;
+import com.school.management.api.exception.BadRequestException;
 import com.school.management.api.model.requstModel.SubjectRequestDto;
 import com.school.management.api.model.responseModel.SubjectResponseDto;
 import com.school.management.api.repository.SubjectRepository;
 import com.school.management.api.service.authService.AuthUtil;
+import com.school.management.api.service.mapper.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,19 +21,24 @@ public class SubjectService {
     private SubjectRepository subjectRepository;
 
     public SubjectResponseDto createSubject(SubjectRequestDto requestDto) {
-        if (subjectRepository.findBySubjectId(requestDto.getSubjectId()).isPresent()) {
-            throw new RuntimeException("Subject with ID " + requestDto.getSubjectId() + " already exists.");
+
+        if (requestDto.getName() == null) {
+            throw new BadRequestException("Subject name can not blank");
         }
+
         String schoolId = AuthUtil.getCurrentSchoolId();
-
         Subject subject = new Subject();
-        subject.setSchoolId(schoolId);
-        subject.setSubjectId(requestDto.getSubjectId());
-        subject.setName(requestDto.getName());
-        subject.setClassId(requestDto.getClassId());
 
-        Subject savedSubject = subjectRepository.save(subject);
-        return mapToResponseDto(savedSubject);
+        subject.setSchoolId(schoolId);
+        subject.setSubjectId(IdGenerator.generateStudentId("SUB"));
+        subject.setName(requestDto.getName());
+
+        try {
+            subjectRepository.save(subject);
+        } catch (DataIntegrityViolationException e) {
+            throw new BadRequestException("Subject already exists in this school");
+        }
+        return mapToResponseDto(subject);
     }
 
     public SubjectResponseDto updateSubject(String subjectId, SubjectRequestDto requestDto) {
@@ -38,7 +46,6 @@ public class SubjectService {
                 .orElseThrow(() -> new RuntimeException("Subject not found with ID: " + subjectId));
 
         subject.setName(requestDto.getName());
-        subject.setClassId(requestDto.getClassId());
 
         Subject updatedSubject = subjectRepository.save(subject);
         return mapToResponseDto(updatedSubject);
@@ -66,10 +73,10 @@ public class SubjectService {
 
     private SubjectResponseDto mapToResponseDto(Subject subject) {
         SubjectResponseDto dto = new SubjectResponseDto();
-        dto.setId(subject.getId());
+
         dto.setSubjectId(subject.getSubjectId());
         dto.setName(subject.getName());
-        dto.setClassId(subject.getClassId());
+        dto.setSchoolId(subject.getSchoolId());
         return dto;
     }
 }

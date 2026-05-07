@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface SchoolClassRepository extends JpaRepository<SchoolClass,Long> {
 
@@ -15,4 +18,10 @@ public interface SchoolClassRepository extends JpaRepository<SchoolClass,Long> {
     @Transactional
     @Query("DELETE FROM SchoolClass sc WHERE sc.classId = :classId")
     int deleteByClassId(@Param("classId") String classId);
+
+
+    Optional<SchoolClass> findByClassId(String classId);
+
+    List<SchoolClass> findAllByClassIdIn(List<String> classIds);
+
 }
