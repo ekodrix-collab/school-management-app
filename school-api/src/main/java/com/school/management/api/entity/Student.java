@@ -25,7 +25,7 @@ public class Student {
     private UUID parentId;  //user ID
 
     @Column(name = "school_id")
-    private String schoolID;
+    private String schoolId;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;

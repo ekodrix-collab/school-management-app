@@ -43,6 +43,7 @@ public class ParentService {
             parent.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
             parent.setIsFirstLogin(true);
             parent.setParentId(MapperService.generateUserId());
+            parent.setSchoolId(request.getSchoolId());
         }
 
         parent.setName(request.getName());

@@ -41,4 +41,18 @@ public class AuthUtil {
                 .findFirst()
                 .orElse(null);
     }
+
+    public static String getCurrentSchoolId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        Object principal = auth.getPrincipal();
+        if (principal instanceof CustomUserDetails userDetails) {
+            return userDetails.getSchoolId();
+        }
+
+        throw new RuntimeException("Invalid principal type or schoolId not found");
+    }
 }

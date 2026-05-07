@@ -37,20 +37,19 @@ public class AdmissionService {
             throw new BadRequestException("Parent Details not Found");
         }
 
-        UUID userId = AuthUtil.getCurrentUserId();
-        if(userId == null){
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        if(schoolId == null){
             throw new BadRequestException("Admin can only create admission");
         }
-        User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new BadRequestException("User not found"));
 
         request.getUserDetails().setRole(Constants.ROLE_PARENT);
-        request.getUserDetails().setSchoolId(user.getSchoolId());
+        request.getUserDetails().setSchoolId(schoolId);
         UserResponse savedUser = userService.createUser(request.getUserDetails());
         request.getParentDetails().setName(savedUser.getName());
         request.getParentDetails().setEmail(savedUser.getMail());
         request.getParentDetails().setMobile(savedUser.getNumber());
         request.getParentDetails().setParentId(savedUser.getUserId());
+        request.getParentDetails().setSchoolId(schoolId);
 
         parentService.createParent(request.getParentDetails());
 

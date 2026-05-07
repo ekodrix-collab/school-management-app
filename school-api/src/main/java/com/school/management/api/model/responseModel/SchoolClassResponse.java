@@ -11,16 +11,19 @@ public class SchoolClassResponse {
     @JsonProperty(value = "display_name")
     private String displayName;
 
-    @JsonProperty(value = "capacity")
-    private Integer capacity;
-
-    @JsonProperty(value = "class_teacher_id")
-    private String classTeacherId;
-
     @JsonProperty(value = "academic_year_id")
-    private String academicYearID; // "2025-2026"
+    private String academicYearID;
 
     @JsonProperty(value = "is_active")
     private Boolean isActive = true;
+
+    @JsonProperty(value = "division")
+    private String division;
+
+    @JsonProperty(value = "standard")
+    private String standard;
+
+    @JsonProperty(value = "class_id")
+    private String classId;
 
 }

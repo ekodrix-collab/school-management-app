@@ -4,6 +4,7 @@ import com.school.management.api.entity.Attendance;
 import com.school.management.api.model.requstModel.AttendanceRequestDto;
 import com.school.management.api.model.responseModel.AttendanceResponseDto;
 import com.school.management.api.repository.AttendanceRepository;
+import com.school.management.api.service.authService.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,7 @@ public class AttendanceService {
                 .collect(Collectors.toSet());
 
         List<Attendance> toSave = new ArrayList<>();
+        String schoolId = AuthUtil.getCurrentSchoolId();
 
         for (AttendanceRequestDto request : requestList) {
 
@@ -48,6 +50,7 @@ public class AttendanceService {
             }
 
             Attendance attendance = new Attendance();
+            attendance.setSchoolId(schoolId);
             attendance.setStudentId(request.getStudentId());
             attendance.setClassId(request.getClassId());
             attendance.setDate(request.getDate());

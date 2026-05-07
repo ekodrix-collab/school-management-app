@@ -40,7 +40,7 @@ public class SchoolClassController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteClass(@PathVariable Long id) {
+    public ResponseEntity<String> deleteClass(@PathVariable String id) {
         schoolClassService.deleteClass(id);
         return ResponseEntity.ok("Class deleted successfully");
     }

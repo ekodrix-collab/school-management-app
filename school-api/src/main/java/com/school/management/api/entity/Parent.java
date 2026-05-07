@@ -19,6 +19,9 @@ public class Parent {
     @Column(name = "parent_id")
     private UUID parentId;
 
+    @Column(name = "school_id")
+    private String schoolId;
+
     @Column(name = "name", nullable = false)
     private String name;
 
