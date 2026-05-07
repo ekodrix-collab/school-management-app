@@ -41,6 +41,7 @@ public class SchoolClassService {
         AcademicYearResponseDto academicYear = null;
         if(request.getAcademicYearId() != null){
             academicYear = academicYearService.getAcademicYearById(request.getAcademicYearId());
+
         }
 
         SchoolClass sc = new SchoolClass();

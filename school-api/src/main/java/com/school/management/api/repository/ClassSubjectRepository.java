@@ -13,4 +13,6 @@ public interface ClassSubjectRepository extends JpaRepository<ClassSubject,Long>
 
     @Query(value = "SELECT * FROM class_subjects WHERE school_id = :schoolId", nativeQuery = true)
     List<ClassSubject> getAllClassSubject(@Param("schoolId") String schoolId);
+
+    ClassSubject findByClassSubjectId(String classSubjectId);
 }

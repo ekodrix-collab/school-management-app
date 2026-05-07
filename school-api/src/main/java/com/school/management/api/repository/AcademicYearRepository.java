@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public interface AcademicYearRepository extends JpaRepository<AcademicYear, Long> {
@@ -18,8 +17,7 @@ public interface AcademicYearRepository extends JpaRepository<AcademicYear, Long
     boolean existsByName(String name);
 
     @Query("SELECT a FROM AcademicYear a WHERE a.name = :year AND a.schoolId = :schoolId")
-    AcademicYear findByAcademicYear(@Param("year") String year,
-            @Param("schoolId") String schoolId);
+    AcademicYear findByAcademicYear(@Param("year") String year);
 
     @Query("SELECT a FROM AcademicYear a WHERE a.schoolId = :schoolId")
     List<AcademicYear> getAllAcademicYear(@Param("schoolId") String schoolId);
@@ -28,9 +26,9 @@ public interface AcademicYearRepository extends JpaRepository<AcademicYear, Long
     boolean existsByAcademicYear(@Param("name") String name,
             @Param("schoolId") String schoolId);
 
-
-    AcademicYear findActiveBySchoolId(String schoolId);
-
     List<AcademicYear> findAllByAcademicYearIdIn(List<String> academicYearIds);
+
+    @Query("SELECT a FROM AcademicYear a WHERE a.academicYearId = :academicYearId")
+    AcademicYear getAcademicYear(@Param("academicYearId") String academicYearId);
 }
 

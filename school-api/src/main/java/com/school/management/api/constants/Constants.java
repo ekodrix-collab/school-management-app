@@ -22,6 +22,7 @@ public class Constants {
     public static final String EXAM_ROUTE = "/api/v1/exam";
     public static final String ACADEMIC_YEAR_ROUTE = "/api/v1/academic-year";
     public static final String SUBJECT_CLASS_ROUTE = "/api/v1/class-subject";
+    public static final String TEACHER_SUBJECT_CLASS_ROUTE = "/api/v1/teacher-class-subject";
 
 
     //GENDER

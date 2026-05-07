@@ -21,15 +21,10 @@ public class TeacherResponseDto {
     @JsonProperty(value = "mobile")
     private String mobile;
 
-    @JsonProperty(value = "subject")
-    private List<String> subject;
-
-    @JsonProperty(value = "classes")
-    private List<String> classes;
-
     @JsonProperty(value = "is_active")
     private Boolean isActive;
 
     @JsonProperty(value = "role")
     private String role;
+
 }
