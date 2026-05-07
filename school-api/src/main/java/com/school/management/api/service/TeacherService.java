@@ -47,7 +47,6 @@ public class TeacherService {
         if (!Constants.ROLE_ADMIN.equalsIgnoreCase(userRole)) {
             throw new BadRequestException("Only admin can create admission");
         }
-
         String schoolId = AuthUtil.getCurrentSchoolId();
 
         Teacher teacher = new Teacher();
@@ -61,19 +60,19 @@ public class TeacherService {
         teacher.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
         teacher.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
 
-        try {
-            if (request.getSubject() != null && !request.getSubject().isEmpty()) {
-                String subject = objectMapper.writeValueAsString(request.getSubject());
-                teacher.setSubject(subject);
-            }
-
-            if (request.getClassIds() != null && !request.getClassIds().isEmpty()) {
-                String classIds = objectMapper.writeValueAsString(request.getClassIds());
-                teacher.setClassId(classIds);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to serialize teacher fields", e);
-        }
+//        try {
+//            if (request.getSubject() != null && !request.getSubject().isEmpty()) {
+//                String subject = objectMapper.writeValueAsString(request.getSubject());
+//                teacher.setSubject(subject);
+//            }
+//
+//            if (request.getClassIds() != null && !request.getClassIds().isEmpty()) {
+//                String classIds = objectMapper.writeValueAsString(request.getClassIds());
+//                teacher.setClassId(classIds);
+//            }
+//        } catch (Exception e) {
+//            throw new RuntimeException("Failed to serialize teacher fields", e);
+//        }
 
         User user = new User();
         user.setName(request.getName());
@@ -118,19 +117,19 @@ public class TeacherService {
         teacher.setRole(request.getRole());
         teacher.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
 
-        try {
-            if (request.getSubject() != null && !request.getSubject().isEmpty()) {
-                String subject = objectMapper.writeValueAsString(request.getSubject());
-                teacher.setSubject(subject);
-            }
-
-            if (request.getClassIds() != null && !request.getClassIds().isEmpty()) {
-                String classIds = objectMapper.writeValueAsString(request.getClassIds());
-                teacher.setClassId(classIds);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to serialize teacher fields", e);
-        }
+//        try {
+//            if (request.getSubject() != null && !request.getSubject().isEmpty()) {
+//                String subject = objectMapper.writeValueAsString(request.getSubject());
+//                teacher.setSubject(subject);
+//            }
+//
+//            if (request.getClassIds() != null && !request.getClassIds().isEmpty()) {
+//                String classIds = objectMapper.writeValueAsString(request.getClassIds());
+//                teacher.setClassId(classIds);
+//            }
+//        } catch (Exception e) {
+//            throw new RuntimeException("Failed to serialize teacher fields", e);
+//        }
 
         User user = userRepository.findByUserId(teacherId)
                 .orElseThrow(() -> new BadRequestException("User record not found for teacher"));

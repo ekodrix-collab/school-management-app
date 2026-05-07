@@ -20,6 +20,8 @@ public class Constants {
     public static final String MARK_ROUTE = "/api/v1/mark" ;
     public static final String SUBJECT_ROUTE = "/api/v1/subject";
     public static final String EXAM_ROUTE = "/api/v1/exam";
+    public static final String ACADEMIC_YEAR_ROUTE = "/api/v1/academic-year";
+    public static final String SUBJECT_CLASS_ROUTE = "/api/v1/class-subject";
 
 
     //GENDER
@@ -32,5 +34,9 @@ public class Constants {
 
     //DUMMY PASSWORD
     public static final String DUMMY_PASSWORD ="12345678";
+
+    //STATUS
+    public static final String ACTIVE = "ACTIVE";
+    public static final String DE_ACTIVE = "DE_ACTIVE";
 
 }

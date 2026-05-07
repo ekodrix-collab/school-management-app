@@ -3,6 +3,8 @@ package com.school.management.api.model.requstModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class SchoolClassRequest {
 
@@ -11,6 +13,8 @@ public class SchoolClassRequest {
 
     @JsonProperty(value = "division")
     private String division;
+
+    private String academicYearId;
 
     @JsonProperty(value = "class_teacher_id")
     private String classTeacherId;
