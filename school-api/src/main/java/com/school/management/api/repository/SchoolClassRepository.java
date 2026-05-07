@@ -24,4 +24,7 @@ public interface SchoolClassRepository extends JpaRepository<SchoolClass,Long> {
 
     List<SchoolClass> findAllByClassIdIn(List<String> classIds);
 
+    @Query("SELECT s FROM SchoolClass s WHERE s.classId = :classId")
+    SchoolClass getSchoolClass(@Param("classId") String classId);
+
 }

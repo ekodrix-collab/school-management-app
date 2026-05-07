@@ -6,6 +6,7 @@ import com.school.management.api.entity.ClassSubject;
 import com.school.management.api.entity.SchoolClass;
 import com.school.management.api.entity.Subject;
 import com.school.management.api.exception.BadRequestException;
+import com.school.management.api.exception.ResourceNotFoundException;
 import com.school.management.api.model.requstModel.ClassSubjectRequest;
 import com.school.management.api.model.responseModel.ClassSubjectResponse;
 import com.school.management.api.repository.*;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -77,6 +80,8 @@ public class ClassSubjectService {
         classSubject.setSubjectId(subject.getSubjectId());
         classSubject.setClassId(schoolClass.getClassId());
         classSubject.setAcademicYearId(academicYear.getAcademicYearId());
+        classSubject.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
+        classSubject.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
 
         try {
             classSubjectRepository.save(classSubject);
@@ -141,6 +146,19 @@ public class ClassSubjectService {
                             academicYear,
                             classSubject);})
                 .toList();
+    }
+
+    public ClassSubjectResponse getClassSubjectResponseById(String classSubjectId) {
+
+        ClassSubject classSubject = classSubjectRepository.findByClassSubjectId(classSubjectId);
+        if(classSubject == null){
+            throw new ResourceNotFoundException("Class Subject ID Not found");
+        }
+        Subject subject = subjectRepository.getBySubjectId(classSubject.getSubjectId());
+        AcademicYear academicYear = academicYearRepository.getAcademicYear(classSubject.getAcademicYearId());
+        SchoolClass schoolClass = schoolClassRepository.getSchoolClass(classSubject.getClassId());
+
+        return mapperService.toCreateClassSubject(subject,schoolClass,academicYear,classSubject);
     }
 
 

@@ -3,6 +3,8 @@ package com.school.management.api.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 @Table(name = "class_subjects", uniqueConstraints = {@UniqueConstraint(columnNames = {"school_id", "academic_year_id", "class_id", "subject_id"})})
@@ -26,5 +28,11 @@ public class ClassSubject {
 
     @Column(name = "academic_year_id")
     private String academicYearId;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
     
 }
