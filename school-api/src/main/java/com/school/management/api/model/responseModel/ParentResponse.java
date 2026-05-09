@@ -18,13 +18,10 @@ public class ParentResponse {
     @JsonProperty(value = "parent_id")
     private UUID parentId;
 
-    @JsonProperty(value = "role")
-    private String role;
-
-    @JsonProperty("students")
-    private List<String> students;
-
     @JsonProperty(value = "is_active")
     private Boolean isActive;
+
+    @JsonProperty(value = "address")
+    private AddressResponse address;
 
 }

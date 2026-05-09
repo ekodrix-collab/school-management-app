@@ -2,23 +2,20 @@ package com.school.management.api.service;
 
 import com.school.management.api.constants.Constants;
 import com.school.management.api.entity.School;
-import com.school.management.api.entity.User;
+import com.school.management.api.exception.BadRequestException;
 import com.school.management.api.exception.ResourceNotFoundException;
 import com.school.management.api.model.requstModel.SchoolRequestDto;
+import com.school.management.api.model.responseModel.AddressResponse;
 import com.school.management.api.model.responseModel.SchoolResponse;
 import com.school.management.api.repository.SchoolRepository;
-import com.school.management.api.repository.UserRepository;
+import com.school.management.api.service.authService.AuthUtil;
 import com.school.management.api.service.mapper.MapperService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.UUID;
-
-import static com.school.management.api.service.mapper.MapperService.generateUserId;
 
 @Service
 public class SchoolService {
@@ -27,55 +24,39 @@ public class SchoolService {
     SchoolRepository schoolRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
     MapperService mapperService;
+
+    @Autowired
+    AddressService addressService;
 
     @Transactional
     public SchoolResponse createSchool(SchoolRequestDto request) {
+        String role = AuthUtil.getCurrentRole();
+        if(!Constants.ROLE_SUPER_ADMIN.equalsIgnoreCase(role)){
+            throw new BadRequestException("Super admin can can only create school");
+        }
 
-        if (schoolRepository.existsBySchoolId(request.getSchoolCode())) {
+        if (schoolRepository.existsBySchoolId(request.getSchoolId())) {
             throw new ResourceNotFoundException("School code already exists");
         }
 
+        request.getAddress().setSchoolId(request.getSchoolId());
+        AddressResponse address = addressService.createAddress(request.getAddress());
+
         School school = new School();
-        school.setSchoolName(request.getSchoolName());
-        school.setSchoolId(request.getSchoolCode());
+        school.setSchoolId(request.getSchoolId());
         school.setEmail(request.getEmail());
         school.setPhone(request.getPhone());
-        school.setAddress(request.getAddress());
-        school.setCity(request.getCity());
-        school.setState(request.getState());
-        school.setCountry(request.getCountry());
-        school.setPincode(request.getPincode());
-        school.setLogoUrl(request.getLogoUrl());
+        school.setAddressId(address.getAddressId());
         school.setIsActive(true);
+        school.setSchoolName(address.getName());
         school.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
         school.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
 
+
         School savedSchool = schoolRepository.save(school);
+        return mapperService.toSchoolResponse(savedSchool,address);
 
-        UUID userId = generateUserId();
-
-        User user = new User();
-        user.setSchoolId(savedSchool.getSchoolId());
-        user.setName(request.getUserDetails().getName());
-        user.setMobile(request.getUserDetails().getPhone());
-        user.setPassword(passwordEncoder.encode(Constants.DUMMY_PASSWORD));
-        user.setEmail(request.getUserDetails().getEmail());
-        user.setRole(Constants.ROLE_ADMIN);
-        user.setIsFirstLogin(true);
-        user.setUpdatedAt(LocalDateTime.now());
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUserId(userId);
-
-        User savedUser = userRepository.save(user);
-
-        return mapperService.toSchoolResponse(savedSchool,savedUser);
     }
 
 

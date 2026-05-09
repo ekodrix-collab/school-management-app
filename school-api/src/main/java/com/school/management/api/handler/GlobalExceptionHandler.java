@@ -53,10 +53,9 @@ public class GlobalExceptionHandler {
 
     // Fallback for all other exceptions
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneric(
-            Exception ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleGeneric(Exception ex, HttpServletRequest request) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse(500, "An unexpected error occurred", request.getRequestURI()));
+                .body(new ErrorResponse(500, ex.getMessage(), request.getRequestURI()));
     }
 }

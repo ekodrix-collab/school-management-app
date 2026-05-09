@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class OnBoardResponse {
@@ -20,13 +21,10 @@ public class OnBoardResponse {
     @JsonProperty(value = "role")
     private String role;
 
+    @JsonProperty(value = "techer_id")
+    private UUID teacherId;
+
     @JsonProperty(value = "is_first_login")
     private Boolean isFirstLogin;
-
-    @JsonProperty(value = "subject")
-    private List<String> subject;
-
-    @JsonProperty(value = "classes")
-    private List<String> classes;
 
 }

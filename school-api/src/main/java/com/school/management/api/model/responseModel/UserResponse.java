@@ -23,4 +23,7 @@ public class UserResponse {
     @JsonProperty(value = "user_id")
     private UUID userId;
 
+    @JsonProperty(value = "school_id")
+    private String schoolId;
+
 }

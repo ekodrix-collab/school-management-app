@@ -30,8 +30,8 @@ public class SchoolClassController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SchoolClassResponse> getClassById(@PathVariable Long id) {
-        return ResponseEntity.ok(schoolClassService.getClassById(id));
+    public ResponseEntity<SchoolClassResponse> getClassById(@PathVariable String classId) {
+        return ResponseEntity.ok(schoolClassService.getClassById(classId));
     }
 
     @PutMapping("/{id}")

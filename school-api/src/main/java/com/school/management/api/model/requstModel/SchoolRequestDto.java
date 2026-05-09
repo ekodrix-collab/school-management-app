@@ -6,11 +6,8 @@ import lombok.Data;
 @Data
 public class SchoolRequestDto {
 
-    @JsonProperty(value = "school_name")
-    private String schoolName;
-
-    @JsonProperty(value = "school_code")
-    private String schoolCode;
+    @JsonProperty(value = "school_id")
+    private String schoolId;
 
     @JsonProperty(value = "email")
     private String email;
@@ -19,23 +16,6 @@ public class SchoolRequestDto {
     private String phone;
 
     @JsonProperty(value = "address")
-    private String address;
+    private AddressRequest address;
 
-    @JsonProperty(value = "city")
-    private String city;
-
-    @JsonProperty(value = "state")
-    private String state;
-
-    @JsonProperty(value = "country")
-    private String country;
-
-    @JsonProperty(value = "pincode")
-    private String pincode;
-
-    @JsonProperty(value = "logo_url")
-    private String logoUrl;
-
-    @JsonProperty(value = "user_details")
-    private UserRequestDto userDetails;
 }

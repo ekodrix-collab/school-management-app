@@ -21,9 +21,8 @@ public class TeacherController {
     TeacherService teacherService;
 
     @PostMapping("/on-board")
-    public ResponseEntity<OnBoardResponse> onBoardTeacher(@RequestBody OnboardRequest request){
-        OnBoardResponse response = teacherService.createTeacher(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public OnBoardResponse onBoardTeacher(@RequestBody OnboardRequest request){
+        return teacherService.createTeacher(request);
     }
 
     @GetMapping("/all")
