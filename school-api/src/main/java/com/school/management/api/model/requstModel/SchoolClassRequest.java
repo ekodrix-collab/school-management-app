@@ -14,6 +14,7 @@ public class SchoolClassRequest {
     @JsonProperty(value = "division")
     private String division;
 
+    @JsonProperty(value = "academic_year_id")
     private String academicYearId;
 
     @JsonProperty(value = "class_teacher_id")

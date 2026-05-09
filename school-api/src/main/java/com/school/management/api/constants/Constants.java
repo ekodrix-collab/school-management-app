@@ -22,7 +22,8 @@ public class Constants {
     public static final String EXAM_ROUTE = "/api/v1/exam";
     public static final String ACADEMIC_YEAR_ROUTE = "/api/v1/academic-year";
     public static final String SUBJECT_CLASS_ROUTE = "/api/v1/class-subject";
-
+    public static final String TEACHER_SUBJECT_CLASS_ROUTE = "/api/v1/teacher-class-subject";
+    public static final String ADMIN_ROUTE = "/api/v1/admin" ;
 
     //GENDER
     public static final String MALE = "MALE";
@@ -36,7 +37,12 @@ public class Constants {
     public static final String DUMMY_PASSWORD ="12345678";
 
     //STATUS
-    public static final String ACTIVE = "ACTIVE";
+    public static final String ACTIVE = "ACTIVE";            //Currently studying
+    public static final String PROMOTED = "PROMOTED";        //Moved to next class
+    public static final String FAILED = "FAILED";            //Did not pass
+    public static final String TRANSFERRED = "TRANSFERRED";  //Moved to another school
+    public static final String LEFT = "LEFT";                //Left school
+    public static final String COMPLETED = "COMPLETED";      //Finished final standard
     public static final String DE_ACTIVE = "DE_ACTIVE";
 
 }

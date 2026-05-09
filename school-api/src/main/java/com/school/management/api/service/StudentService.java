@@ -1,16 +1,18 @@
 package com.school.management.api.service;
 
+import com.school.management.api.constants.Constants;
 import com.school.management.api.entity.Student;
 import com.school.management.api.model.requstModel.StudentRequestDto;
 import com.school.management.api.model.responseModel.StudentResponseDto;
 import com.school.management.api.repository.StudentRepository;
-import com.school.management.api.repository.UserRepository;
 import com.school.management.api.service.authService.AuthUtil;
+import com.school.management.api.service.mapper.IdGenerator;
 import com.school.management.api.service.mapper.MapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Service
 public class StudentService {
@@ -21,100 +23,30 @@ public class StudentService {
     @Autowired
     MapperService mapperService;
 
-    @Autowired
-    UserRepository userRepository;
-
     public StudentResponseDto createStudent(StudentRequestDto requestDto) {
-
         String schoolId = AuthUtil.getCurrentSchoolId();
-
         Student student = new Student();
-        student.setName(requestDto.getName());
-        student.setStudentId(schoolId + "_" + requestDto.getAdmissionNumber());
+
+        student.setName(requestDto.getFirstName() + " " + requestDto.getLastName());
+        student.setStudentId(schoolId + "-" + IdGenerator.generateStudentId("S"));
         student.setSchoolId(schoolId);
+        student.setParentId(requestDto.getParentId());
+        student.setFirstLanguage(requestDto.getFirstLanguage());
+        student.setSecondLanguage(requestDto.getSecondLanguage());
         student.setAdmissionNumber(requestDto.getAdmissionNumber());
-        student.setRollNumber(requestDto.getRollNumber());
+        if(requestDto.getAdharNo() != null){
+            student.setAdharNo(requestDto.getAdharNo());
+        }
         student.setDateOfBirth(requestDto.getDateOfBirth());
         student.setGender(requestDto.getGender());
-        student.setClassId(requestDto.getClassId());
         student.setBloodGroup(requestDto.getBloodGroup());
-        if (requestDto.getUserId() != null) {
-            student.setParentId(requestDto.getUserId());
-        }
-        student.setCreatedAt(LocalDateTime.now());
-        student.setUpdatedAt(LocalDateTime.now());
-
-        student.setAcademicYear(MapperService.getAcademicYear());
+        student.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
+        student.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
 
         Student savedStudent = studentRepository.save(student);
-
         return mapperService.toCreateStudent(savedStudent);
 
     }
 
-    // public StudentResponseDto updateStudent(Long id , StudentRequestDto
-    // requestDto){
-    // Student student = studentRepository.findById(id)
-    // .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
-    //
-    // student.setName(requestDto.getName());
-    // student.setAdmissionNumber(requestDto.getAdmissionNumber());
-    // student.setRollNumber(requestDto.getRollNumber());
-    // student.setDateOfBirth(requestDto.getDateOfBirth());
-    // student.setGender(requestDto.getGender());
-    // student.setBloodGroup(requestDto.getBloodGroup());
-    //
-    // student.setUpdatedAt(LocalDateTime.now());
-    // Student updatedStudent = studentRepository.save(student);
-    // return StudentResponseDto.builder()
-    // .id(updatedStudent.getId())
-    // .name(updatedStudent.getName())
-    // .admissionNumber(updatedStudent.getAdmissionNumber())
-    // .rollNumber(updatedStudent.getRollNumber())
-    // .dateOfBirth(updatedStudent.getDateOfBirth())
-    // .gender(updatedStudent.getGender())
-    // .bloodGroup(updatedStudent.getBloodGroup())
-    // .build();
-    // }
-    //
-    // public String deleteStudent(Long id){
-    // Student student = studentRepository.findById(id)
-    // .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
-    // studentRepository.delete(student);
-    // return "Student deleted successfully with id: " + id;
-    // }
-    //
-    // public List<StudentResponseDto> getAllStudents() {
-    //
-    // List<Student> students = studentRepository.findAll();
-    //
-    // return students.stream().map(student -> StudentResponseDto.builder()
-    // .id(student.getId())
-    // .name(student.getName())
-    // .admissionNumber(student.getAdmissionNumber())
-    // .rollNumber(student.getRollNumber())
-    // .dateOfBirth(student.getDateOfBirth())
-    // .gender(student.getGender())
-    // .bloodGroup(student.getBloodGroup())
-    // .build()
-    // ).collect(Collectors.toList());
-    // }
-    //
-    //
-    // public StudentResponseDto getStudentById(Long id) {
-    //
-    // Student student = studentRepository.findById(id)
-    // .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
-    //
-    // return StudentResponseDto.builder()
-    // .id(student.getId())
-    // .name(student.getName())
-    // .admissionNumber(student.getAdmissionNumber())
-    // .rollNumber(student.getRollNumber())
-    // .dateOfBirth(student.getDateOfBirth())
-    // .gender(student.getGender())
-    // .bloodGroup(student.getBloodGroup())
-    // .build();
-    // }
 
 }

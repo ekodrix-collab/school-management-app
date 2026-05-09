@@ -19,9 +19,6 @@ public class Teacher {
     @Column(name = "teacher_id")
     private UUID teacherId;
 
-//    @Column(name = "class_data", columnDefinition = "TEXT")
-//    private String classId;
-
     @Column(name = "school_id", nullable = false)
     private String schoolId;
 
@@ -33,9 +30,6 @@ public class Teacher {
 
     @Column(name = "mobile", nullable = false, length = 15)
     private String mobile;
-
-//    @Column(name = "subject", nullable = false, columnDefinition = "TEXT")
-//    private String subject;
 
     @Column(name = "role")
     private String role;

@@ -41,6 +41,7 @@ public class SchoolClassService {
         AcademicYearResponseDto academicYear = null;
         if(request.getAcademicYearId() != null){
             academicYear = academicYearService.getAcademicYearById(request.getAcademicYearId());
+
         }
 
         SchoolClass sc = new SchoolClass();
@@ -72,8 +73,8 @@ public class SchoolClassService {
 
     }
 
-    public SchoolClassResponse getClassById(Long id) {
-        SchoolClass sc = schoolClassRepository.findById(id)
+    public SchoolClassResponse getClassById(String classId) {
+        SchoolClass sc = schoolClassRepository.findByClassId(classId)
                 .orElseThrow(() -> new RuntimeException("Class not found"));
         return mapToResponse(sc);
 
