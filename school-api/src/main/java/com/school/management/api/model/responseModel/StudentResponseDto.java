@@ -13,14 +13,20 @@ public class StudentResponseDto {
     @JsonProperty(value = "name")
     private String name;
 
-    @JsonProperty(value = "admission_number")
-    private String admissionNumber;
+    @JsonProperty(value = "student_id")
+    private String studentId;
 
-    @JsonProperty(value = "roll_number")
-    private String rollNumber;
+    @JsonProperty(value = "admission_number")
+    private Long admissionNumber;
 
     @JsonProperty(value = "date_of_birth")
     private LocalDate dateOfBirth;
+
+    @JsonProperty(value = "first_language")
+    private String firstLanguage;
+
+    @JsonProperty(value = "second_language")
+    private String secondLanguage;
 
     @JsonProperty(value = "gender")
     private String gender;

@@ -44,21 +44,12 @@ public class ParentService {
             parent.setIsFirstLogin(true);
             parent.setParentId(MapperService.generateUserId());
             parent.setSchoolId(request.getSchoolId());
+            parent.setAddressId(request.getAddressId());
         }
 
-        parent.setName(request.getName());
-        parent.setSpouseName(request.getSpouseName());
         parent.setMobile(request.getMobile());
+        parent.setName(request.getName());
         parent.setAlternateMobile(request.getAlternateMobile());
-        parent.setEmail(request.getEmail());
-        parent.setHouseName(request.getHouseName());
-        parent.setPlace(request.getPlace());
-        parent.setRole(Constants.ROLE_PARENT);
-        parent.setCity(request.getCity());
-        parent.setDistrict(request.getDistrict());
-        parent.setState(request.getState());
-        parent.setPincode(request.getPincode());
-        parent.setLandmark(request.getLandmark());
         parent.setIsActive(true);
         parent.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
 

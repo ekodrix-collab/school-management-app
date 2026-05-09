@@ -9,23 +9,23 @@ import java.util.UUID;
 @Data
 public class StudentRequestDto {
 
-    @JsonProperty(value = "name")
-    private String name;
+    @JsonProperty(value = "first_name")
+    private String firstName;
+
+    @JsonProperty(value = "last_name")
+    private String lastName;
 
     @JsonProperty(value = "admission_number")
-    private String admissionNumber;
+    private Long admissionNumber;
 
-    @JsonProperty(value ="roll_number")
-    private String rollNumber;
+    @JsonProperty(value = "first_language")
+    private String firstLanguage;
+
+    @JsonProperty(value = "second_language")
+    private String secondLanguage;
 
     @JsonProperty(value="date_of_birth")
     private LocalDate dateOfBirth;
-
-    @JsonProperty(value = "class_id")
-    private String classId;
-
-    @JsonProperty(value = "school_id")
-    private String schoolId;
 
     @JsonProperty(value ="gender")
     private String gender;
@@ -33,12 +33,10 @@ public class StudentRequestDto {
     @JsonProperty(value ="blood_group")
     private String bloodGroup;
 
-    @JsonProperty(value = "user_details")
-    private UserRequestDto userDetails;
+    @JsonProperty(value = "adhar_no")
+    private String adharNo;
 
-    @JsonProperty(value = "parent_details")
-    private ParentRequestDto parentDetails;
+    @JsonProperty(value = "parent_id")
+    private UUID parentId;
 
-    @JsonProperty(value = "user_id")
-    private UUID userId;
 }

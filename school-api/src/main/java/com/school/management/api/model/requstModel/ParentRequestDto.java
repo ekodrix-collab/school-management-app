@@ -18,40 +18,16 @@ public class ParentRequestDto {
     @JsonProperty(value = "school_id")
     private String schoolId;
 
-    @JsonProperty(value = "spouse_name")
-    private String spouseName;
+    @JsonProperty(value = "address_id")
+    private String addressId;
 
     @JsonProperty(value = "mobile")
     private String mobile;
 
-    @JsonProperty(value = "student_ids")
-    private List<String> studentIds;
-
     @JsonProperty(value = "alternate_mobile")
     private String alternateMobile;
 
-    @JsonProperty(value = "email")
-    private String email;
-
-    @JsonProperty(value = "house_name")
-    private String houseName;
-
-    @JsonProperty(value = "place")
-    private String place;
-
-    @JsonProperty(value = "city")
-    private String city;
-
-    @JsonProperty(value = "district")
-    private String district;
-
-    @JsonProperty(value = "state")
-    private String state;
-
-    @JsonProperty(value = "pincode")
-    private String pincode;
-
-    @JsonProperty(value = "landmark")
-    private String landmark;
+    @JsonProperty(value = "role")
+    private String role;
 
 }

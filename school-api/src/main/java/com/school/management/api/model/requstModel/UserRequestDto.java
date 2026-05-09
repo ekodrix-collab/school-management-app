@@ -6,6 +6,9 @@ import lombok.Data;
 @Data
 public class UserRequestDto {
 
+    @JsonProperty(value = "school_id")
+    private String schoolId;
+
     @JsonProperty(value = "name")
     private String name;
 
@@ -17,8 +20,5 @@ public class UserRequestDto {
 
     @JsonProperty(value = "role")
     private String role;
-
-    @JsonProperty(value = "school_id")
-    private String schoolId;
 
 }

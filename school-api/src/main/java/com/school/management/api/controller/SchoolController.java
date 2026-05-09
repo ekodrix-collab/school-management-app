@@ -5,7 +5,6 @@ import com.school.management.api.model.requstModel.SchoolRequestDto;
 import com.school.management.api.model.responseModel.SchoolResponse;
 import com.school.management.api.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +18,12 @@ public class SchoolController {
     SchoolService schoolService;
 
     @PostMapping("/create")
-    public ResponseEntity<SchoolResponse> createSchool(@RequestBody SchoolRequestDto request) {
-        SchoolResponse response = schoolService.createSchool(request);
-        return ResponseEntity.ok(response);
+    public SchoolResponse createSchool(@RequestBody SchoolRequestDto request) {
+        return schoolService.createSchool(request);
     }
 
     //edit
     //delete
+    //get all filter by academic year
 
 }

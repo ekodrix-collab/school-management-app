@@ -1,17 +1,22 @@
 package com.school.management.api.model.responseModel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.school.management.api.model.requstModel.AddressRequest;
 import lombok.Data;
 
 @Data
 public class SchoolResponse {
 
-    @JsonProperty(value = "school_name")
-    private String schoolName;
+    @JsonProperty(value = "school_id")
+    private String schoolId;
 
-    @JsonProperty(value = "school_code")
-    private String schoolCode;
+    @JsonProperty(value = "email")
+    private String email;
 
-    @JsonProperty(value = "admin")
-    private UserResponse admin;
+    @JsonProperty(value = "phone")
+    private String phone;
+
+    @JsonProperty(value = "address")
+    private AddressResponse address;
+
 }

@@ -2,6 +2,8 @@ package com.school.management.api.service;
 
 import com.school.management.api.constants.Constants;
 import com.school.management.api.entity.User;
+import com.school.management.api.exception.BadRequestException;
+import com.school.management.api.exception.UnauthorizedException;
 import com.school.management.api.model.requstModel.UserRequestDto;
 import com.school.management.api.model.responseModel.UserResponse;
 import com.school.management.api.repository.UserRepository;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Optional;
+import java.util.UUID;
 
 import static com.school.management.api.service.mapper.MapperService.generateUserId;
 
@@ -31,10 +35,18 @@ public class UserService {
 
     @Transactional
     public UserResponse createUser(UserRequestDto request){
+        String role = request.getRole() != null ? request.getRole() : AuthUtil.getCurrentRole();
+        String schoolId = request.getSchoolId() != null ? request.getSchoolId() : AuthUtil.getCurrentSchoolId();
 
-        String schoolId = AuthUtil.getCurrentSchoolId();
+        if (request.getPhone() != null) {
+            boolean exists = userRepository.findByMobile(request.getPhone()).isPresent();
+            if (exists) {
+                throw new BadRequestException("Mobile number already exists");
+            }
+        }
 
         User user = new User();
+
         user.setName(request.getName());
         user.setMobile(request.getPhone());
         user.setRole(request.getRole());
@@ -51,5 +63,9 @@ public class UserService {
 
     }
 
-
+    public UserResponse getUserById(UUID userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() ->
+                new BadRequestException("User record not found for teacher"));
+        return mapperService.toUserResponse(user);
+    }
 }

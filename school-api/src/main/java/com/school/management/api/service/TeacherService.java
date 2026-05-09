@@ -29,9 +29,6 @@ public class TeacherService {
     TeacherRepository teacherRepository;
 
     @Autowired
-    ObjectMapper objectMapper;
-
-    @Autowired
     MapperService mapperService;
 
     @Autowired

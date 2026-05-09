@@ -18,6 +18,9 @@ public class School {
     @Column(name = "school_id", nullable = false, unique = true, length = 20)
     private String schoolId;
 
+    @Column(name = "address_id")
+    private String addressId;
+
     @Column(name = "school_name", nullable = false)
     private String schoolName;
 
@@ -26,24 +29,6 @@ public class School {
 
     @Column(name = "phone", nullable = false, length = 15)
     private String phone;
-
-    @Column(name = "address", columnDefinition = "TEXT")
-    private String address;
-
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "state")
-    private String state;
-
-    @Column(name = "country")
-    private String country;
-
-    @Column(name = "pincode", length = 10)
-    private String pincode;
-
-    @Column(name = "logo_url")
-    private String logoUrl;
 
     @Column(name = "is_active")
     private Boolean isActive;

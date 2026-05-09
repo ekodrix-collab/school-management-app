@@ -18,11 +18,8 @@ public class Student {
     @Column(name = "student_id")
     private String studentId;
 
-    @Column(name = "class_id")
-    private String classId;
-
     @Column(name = "parent_id")
-    private UUID parentId;  //user ID
+    private UUID parentId;
 
     @Column(name = "school_id")
     private String schoolId;
@@ -31,10 +28,10 @@ public class Student {
     private String name;
 
     @Column(name = "admission_number",nullable = false)
-    private String admissionNumber;
+    private Long admissionNumber;
 
-    @Column(name = "roll_number", nullable = false)
-    private String rollNumber;
+    @Column(name = "adhar_no")
+    private String adharNo;
 
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
@@ -45,8 +42,11 @@ public class Student {
     @Column(name = "blood_group",length = 5)
     private String bloodGroup;
 
-    @Column(name = "academic_year")
-    private String academicYear;
+    @Column(name = "first_language")
+    private String firstLanguage;
+
+    @Column(name = "second_language")
+    private String secondLanguage;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/school/create").hasAuthority(Constants.ROLE_SUPER_ADMIN)
                         .requestMatchers("/api/v1/school-class/create").hasAnyAuthority(Constants.ROLE_TEACHER,Constants.ROLE_ADMIN)
                         .requestMatchers("/api/v1/user/create").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_TEACHER)
-                        .requestMatchers("/api/v1/admin/**").hasAuthority(Constants.ROLE_ADMIN)
+                        .requestMatchers("/api/v1/admin/**").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_SUPER_ADMIN)
                         .requestMatchers("/api/v1/attendance/**").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_TEACHER)
                         .requestMatchers("/api/v1/teacher/**").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_TEACHER)
                         .requestMatchers("/api/v1/mark/**").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_TEACHER)
