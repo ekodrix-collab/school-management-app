@@ -5,6 +5,7 @@ import com.school.management.api.entity.Admission;
 import com.school.management.api.exception.BadRequestException;
 import com.school.management.api.model.requstModel.AdmissionRequest;
 import com.school.management.api.model.responseModel.*;
+import com.school.management.api.repository.AdmissionRepository;
 import com.school.management.api.service.authService.AuthUtil;
 import com.school.management.api.service.mapper.IdGenerator;
 import com.school.management.api.service.mapper.MapperService;
@@ -38,6 +39,9 @@ public class AdmissionService {
 
     @Autowired
     AddressService addressService;
+
+    @Autowired
+    AdmissionRepository admissionRepository;
 
     @Transactional
     public AdmissionResponse createAdmission(AdmissionRequest request) {
@@ -84,7 +88,9 @@ public class AdmissionService {
         admission.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
         admission.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
 
-        return mapperService.createAdmissionResponse(newStudent,schoolClass,academicYear,admission);
+        Admission saveAdmission = admissionRepository.save(admission);
+
+        return mapperService.createAdmissionResponse(newStudent,schoolClass,academicYear,saveAdmission);
 
     }
 }
