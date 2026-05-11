@@ -22,5 +22,10 @@ public class ParentController {
         return parentService.createParent(request);
     }
 
+    //edit
+    //get all
+    //get by id
+    //delete
+
     
 }

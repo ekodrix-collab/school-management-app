@@ -27,4 +27,8 @@ public class ClassSubjectController {
         return classSubjectService.getAllClassSubject();
     }
 
+    //get by id
+    //edit
+    //delete
+
 }

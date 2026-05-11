@@ -10,15 +10,5 @@ import java.util.Optional;
 @Repository
 public interface MarkRepository extends JpaRepository<Mark, Long> {
 
-    Optional<Mark> findByStudentIdAndSubjectIdAndExamIdAndAcademicYearId(
-            String studentId, String subjectId, String examId, String academicYearId
-    );
-
-    List<Mark> findByStudentIdInAndSubjectIdInAndExamIdInAndAcademicYearIdIn(
-            List<String> studentIds,
-            List<String> subjectIds,
-            List<String> examIds,
-            List<String> academicYearIds
-    );
 
 }

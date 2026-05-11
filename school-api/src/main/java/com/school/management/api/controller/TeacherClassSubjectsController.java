@@ -22,5 +22,10 @@ public class TeacherClassSubjectsController {
         return teacherClassSubjectsService.createTeacherClassSubjects(request);
     }
 
+    //edit
+    //get by id
+    //get all
+    //delete
+
 
 }
