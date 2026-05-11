@@ -1,102 +1,93 @@
 package com.school.management.api.service;
 
-import com.school.management.api.entity.Attendance;
-import com.school.management.api.model.requstModel.AttendanceRequestDto;
-import com.school.management.api.model.responseModel.AttendanceResponseDto;
-import com.school.management.api.repository.AttendanceRepository;
+import com.school.management.api.entity.AttendanceSession;
+import com.school.management.api.entity.StudentAttendance;
+import com.school.management.api.model.requstModel.AttendanceRequest;
+import com.school.management.api.model.requstModel.AttendanceStudentRequest;
+import com.school.management.api.model.responseModel.AttendanceResponse;
+import com.school.management.api.repository.AttendanceSessionRepository;
+import com.school.management.api.repository.StudentAttendanceRepository;
 import com.school.management.api.service.authService.AuthUtil;
+import com.school.management.api.service.mapper.IdGenerator;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class AttendanceService {
 
     @Autowired
-    private AttendanceRepository attendanceRepository;
+    AttendanceSessionRepository attendanceSessionRepository;
 
-    public List<AttendanceResponseDto> markAttendanceBulk(List<AttendanceRequestDto> requestList) {
+    @Autowired
+    StudentAttendanceRepository studentAttendanceRepository;
 
-        if (requestList.isEmpty()) return List.of();
+    @Transactional
+    public AttendanceResponse createAttendance(AttendanceRequest request) {
 
-        List<String> studentIds = requestList.stream()
-                .map(AttendanceRequestDto::getStudentId)
-                .toList();
-
-        LocalDate date = requestList.get(0).getDate();
-
-        List<Attendance> existingList =
-                attendanceRepository.findByStudentIdsAndDate(studentIds, date);
-
-        Set<String> existingStudentIds = existingList.stream()
-                .map(Attendance::getStudentId)
-                .collect(Collectors.toSet());
-
-        List<Attendance> toSave = new ArrayList<>();
         String schoolId = AuthUtil.getCurrentSchoolId();
-
-        for (AttendanceRequestDto request : requestList) {
-
-            if (existingStudentIds.contains(request.getStudentId())) {
-                throw new RuntimeException("Duplicate attendance for student: " + request.getStudentId()
+        boolean exists = attendanceSessionRepository
+                .existsBySchoolIdAndAcademicYearIdAndClassIdAndAttendanceDateAndSessionTypeAndPeriodNumber(
+                        request.getSchoolId(),
+                        request.getAcademicYearId(),
+                        request.getClassId(),
+                        request.getAttendanceDate(),
+                        request.getSessionType(),
+                        request.getPeriodNumber()
                 );
-            }
 
-            Attendance attendance = new Attendance();
-            attendance.setSchoolId(schoolId);
-            attendance.setStudentId(request.getStudentId());
-            attendance.setClassId(request.getClassId());
-            attendance.setDate(request.getDate());
-            attendance.setStatus(request.getStatus());
-            attendance.setCreatedAt(LocalDateTime.now());
-            attendance.setUpdatedAt(LocalDateTime.now());
-
-            toSave.add(attendance);
+        if (exists) {
+            throw new RuntimeException("Attendance already marked");
         }
 
-        List<Attendance> saved = attendanceRepository.saveAll(toSave);
+        AttendanceSession attendanceSession = new AttendanceSession();
 
-        return saved.stream()
-                .map(this::mapToResponseDto)
-                .toList();
+        attendanceSession.setAttendanceSessionId(IdGenerator.generateStudentId("ATS"));
+        attendanceSession.setSchoolId(schoolId);
+        attendanceSession.setTimetableId(request.getTimetableId());
+        attendanceSession.setAcademicYearId(request.getAcademicYearId());
+        attendanceSession.setClassId(request.getClassId());
+        attendanceSession.setClassSubjectId(request.getClassSubjectId());
+        attendanceSession.setTeacherId(request.getTeacherId());
+        attendanceSession.setAttendanceDate(request.getAttendanceDate());
+        attendanceSession.setSessionType(request.getSessionType());
+        attendanceSession.setPeriodNumber(request.getPeriodNumber());
+        attendanceSession.setIsSubstitution(request.getIsSubstitution());
+        attendanceSession.setOriginalClassSubjectId(request.getOriginalClassSubjectId());
+        attendanceSession.setOriginalTeacherId(request.getOriginalTeacherId());
+        attendanceSession.setRemarks(request.getRemarks());
+        attendanceSession.setCreatedAt(LocalDateTime.now());
+        attendanceSession.setUpdatedAt(LocalDateTime.now());
 
+        attendanceSessionRepository.save(attendanceSession);
+
+        List<StudentAttendance> studentAttendances = new ArrayList<>();
+
+        for (AttendanceStudentRequest studentRequest : request.getStudents()) {
+
+            StudentAttendance studentAttendance = new StudentAttendance();
+
+            studentAttendance.setStudentAttendanceId(IdGenerator.generateStudentId("STA"));
+            studentAttendance.setAttendanceSessionId(attendanceSession.getAttendanceSessionId());
+            studentAttendance.setStudentId(studentRequest.getStudentId());
+            studentAttendance.setStatus(studentRequest.getStatus());
+            studentAttendance.setRemarks(studentRequest.getRemarks());
+            studentAttendance.setCreatedAt(LocalDateTime.now());
+            studentAttendance.setUpdatedAt(LocalDateTime.now());
+
+            studentAttendances.add(studentAttendance);
+        }
+
+        studentAttendanceRepository.saveAll(studentAttendances);
+
+        return AttendanceResponse.builder()
+                .attendanceSessionId(attendanceSession.getAttendanceSessionId())
+                .message("Attendance created successfully")
+                .build();
     }
 
-    public List<AttendanceResponseDto> getStudentAttendance(String studentId) {
-        List<Attendance> attendanceList = attendanceRepository.findAll().stream()
-                .filter(a -> a.getStudentId().equals(studentId))
-                .toList();
-
-        return attendanceList.stream()
-                .map(this::mapToResponseDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<AttendanceResponseDto> getClassAttendance(String classId, LocalDate date) {
-
-        List<Attendance> attendanceList = attendanceRepository.findAllByClassIdAndDate(classId, date);
-        return attendanceList.stream()
-                .map(this::mapToResponseDto)
-                .collect(Collectors.toList());
-
-    }
-
-    private AttendanceResponseDto mapToResponseDto(Attendance attendance) {
-        AttendanceResponseDto dto = new AttendanceResponseDto();
-        dto.setId(attendance.getId());
-        dto.setStudentId(attendance.getStudentId());
-        dto.setClassId(attendance.getClassId());
-        dto.setDate(attendance.getDate());
-        dto.setStatus(attendance.getStatus());
-        dto.setCreatedAt(attendance.getCreatedAt());
-        dto.setUpdatedAt(attendance.getUpdatedAt());
-        return dto;
-    }
 }
