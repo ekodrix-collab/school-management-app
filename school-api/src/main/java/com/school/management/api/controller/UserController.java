@@ -7,6 +7,7 @@ import com.school.management.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -29,6 +30,21 @@ public class UserController {
     //get
     //edit
     //delete
+
+    @GetMapping("/all")
+    public List<UserResponse> getAllUser(){
+        return userService.getAllUser();
+    }
+
+    @PutMapping("/{userId}")
+    public UserResponse updateUser(@PathVariable UUID userId,@RequestBody UserRequestDto request){
+        return userService.updateUser(userId,request);
+    }
+
+    @DeleteMapping("/{userId}")
+    public String deleteUser(@PathVariable UUID userId){
+        return userService.deleteUser(userId);
+    }
 
 
 }
