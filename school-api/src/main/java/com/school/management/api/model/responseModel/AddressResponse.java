@@ -30,4 +30,7 @@ public class AddressResponse {
     @JsonProperty(value = "landmark")
     private String landmark;
 
+    @JsonProperty(value = "address_type")
+    private String addressType;
+
 }

@@ -39,6 +39,7 @@ public class AddressService {
         address.setLandmark(request.getLandmark());
         address.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
         address.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
+        address.setAddressType(request.getAddressType());
 
         Address saveAddress = addressRepository.save(address);
         return mapperService.toCreateAddress(saveAddress);

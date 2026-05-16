@@ -30,8 +30,7 @@ public class AttendanceService {
     public AttendanceResponse createAttendance(AttendanceRequest request) {
 
         String schoolId = AuthUtil.getCurrentSchoolId();
-        boolean exists = attendanceSessionRepository
-                .existsBySchoolIdAndAcademicYearIdAndClassIdAndAttendanceDateAndSessionTypeAndPeriodNumber(
+        boolean exists = attendanceSessionRepository.existsBySchoolIdAndAcademicYearIdAndClassIdAndAttendanceDateAndSessionTypeAndPeriodNumber(
                         request.getSchoolId(),
                         request.getAcademicYearId(),
                         request.getClassId(),
@@ -89,5 +88,7 @@ public class AttendanceService {
                 .message("Attendance created successfully")
                 .build();
     }
+
+    //one by one attendance option
 
 }

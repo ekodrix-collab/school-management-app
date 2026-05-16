@@ -176,6 +176,7 @@ public class MapperService {
         response.setState(address.getState());
         response.setPincode(address.getPincode());
         response.setLandmark(address.getLandmark());
+        response.setAddressType(address.getAddressType());
 
         return response;
     }
