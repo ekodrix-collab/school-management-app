@@ -20,6 +20,9 @@ public class Address {
     @Column(name = "address_id",unique = true)
     private String addressId;
 
+    @Column(name = "address_type")
+    private String addressType;
+
     @Column(name = "name")
     private String name;
 
