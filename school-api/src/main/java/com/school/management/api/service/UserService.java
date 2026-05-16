@@ -3,7 +3,6 @@ package com.school.management.api.service;
 import com.school.management.api.constants.Constants;
 import com.school.management.api.entity.User;
 import com.school.management.api.exception.BadRequestException;
-import com.school.management.api.exception.UnauthorizedException;
 import com.school.management.api.model.requstModel.UserRequestDto;
 import com.school.management.api.model.responseModel.UserResponse;
 import com.school.management.api.repository.UserRepository;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 import static com.school.management.api.service.mapper.MapperService.generateUserId;
@@ -38,8 +37,8 @@ public class UserService {
         String role = request.getRole() != null ? request.getRole() : AuthUtil.getCurrentRole();
         String schoolId = request.getSchoolId() != null ? request.getSchoolId() : AuthUtil.getCurrentSchoolId();
 
-        if (request.getPhone() != null) {
-            boolean exists = userRepository.findByMobile(request.getPhone()).isPresent();
+        if (request.getMobile() != null) {
+            boolean exists = userRepository.findByMobile(request.getMobile()).isPresent();
             if (exists) {
                 throw new BadRequestException("Mobile number already exists");
             }
@@ -48,7 +47,7 @@ public class UserService {
         User user = new User();
 
         user.setName(request.getName());
-        user.setMobile(request.getPhone());
+        user.setMobile(request.getMobile());
         user.setRole(request.getRole());
         user.setIsFirstLogin(true);
         user.setSchoolId(schoolId);
@@ -67,5 +66,34 @@ public class UserService {
         User user = userRepository.findByUserId(userId).orElseThrow(() ->
                 new BadRequestException("User record not found for teacher"));
         return mapperService.toUserResponse(user);
+    }
+
+    public List<UserResponse> getAllUser(){
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        List<User> users = userRepository.getAllUser(schoolId);
+        return users.stream()
+                .map(user -> mapperService.toUserResponse(user))
+                .toList();
+    }
+
+    public UserResponse updateUser(UUID userId,UserRequestDto request){
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new BadRequestException("User not found"));
+
+        user.setName(request.getName());
+        user.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
+        user.setEmail(request.getEmail());
+        user.setMobile(request.getMobile());
+        user.setRole(request.getRole());
+        userRepository.save(user);
+        return mapperService.toUserResponse(user);
+
+    }
+
+    public String deleteUser(UUID userId){
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new BadRequestException("User not found"));
+        user.setIsActive(false);
+        userRepository.save(user);
+        return "User deleted successfully";
     }
 }

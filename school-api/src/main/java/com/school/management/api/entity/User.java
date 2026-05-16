@@ -45,4 +45,8 @@ public class User {
     @Column(name = "updatedAt")
     private LocalDateTime updatedAt;
 
+    //
+    @Column(name = "is_active")
+    private Boolean isActive = true;
+
 }

@@ -15,8 +15,8 @@ public class UserRequestDto {
     @JsonProperty(value = "email")
     private String email;
 
-    @JsonProperty(value = "phone")
-    private String phone;
+    @JsonProperty(value = "mobile")
+    private String mobile;
 
     @JsonProperty(value = "role")
     private String role;
