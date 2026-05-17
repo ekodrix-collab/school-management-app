@@ -10,7 +10,6 @@ import com.school.management.api.model.responseModel.TeacherResponseDto;
 import com.school.management.api.repository.TeacherClassSubjectsRepository;
 import com.school.management.api.service.authService.AuthUtil;
 import com.school.management.api.service.mapper.IdGenerator;
-import com.school.management.api.service.mapper.MapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

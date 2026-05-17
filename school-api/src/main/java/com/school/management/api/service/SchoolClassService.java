@@ -1,12 +1,10 @@
 package com.school.management.api.service;
 
-import com.school.management.api.entity.AcademicYear;
 import com.school.management.api.entity.SchoolClass;
 import com.school.management.api.exception.BadRequestException;
 import com.school.management.api.model.requstModel.SchoolClassRequest;
 import com.school.management.api.model.responseModel.AcademicYearResponseDto;
 import com.school.management.api.model.responseModel.SchoolClassResponse;
-import com.school.management.api.repository.AcademicYearRepository;
 import com.school.management.api.repository.SchoolClassRepository;
 import com.school.management.api.service.authService.AuthUtil;
 import com.school.management.api.service.mapper.IdGenerator;
@@ -27,11 +25,7 @@ public class SchoolClassService {
     private SchoolClassRepository schoolClassRepository;
 
     @Autowired
-    private AcademicYearRepository academicYearRepository;
-
-    @Autowired
     AcademicYearService academicYearService;
-
 
 
     @Transactional
