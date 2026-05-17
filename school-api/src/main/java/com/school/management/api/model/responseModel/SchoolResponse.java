@@ -1,7 +1,6 @@
 package com.school.management.api.model.responseModel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.school.management.api.model.requstModel.AddressRequest;
 import lombok.Data;
 
 @Data

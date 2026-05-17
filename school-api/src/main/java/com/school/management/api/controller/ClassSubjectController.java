@@ -1,7 +1,6 @@
 package com.school.management.api.controller;
 
 import com.school.management.api.constants.Constants;
-import com.school.management.api.entity.ClassSubject;
 import com.school.management.api.model.requstModel.ClassSubjectRequest;
 import com.school.management.api.model.responseModel.ClassSubjectResponse;
 import com.school.management.api.service.ClassSubjectService;

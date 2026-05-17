@@ -1,7 +1,6 @@
 package com.school.management.api.repository;
 
 import com.school.management.api.entity.User;
-import com.school.management.api.model.responseModel.UserResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
