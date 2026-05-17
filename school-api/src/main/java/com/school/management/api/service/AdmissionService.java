@@ -75,6 +75,7 @@ public class AdmissionService {
         request.getParentDetails().setAddressId(address.getAddressId());
         request.getParentDetails().setSchoolId(schoolId);
         request.getParentDetails().setMobile(request.getUserDetails().getMobile());
+        request.getParentDetails().setName(user.getName());
         ParentResponse parentDetails = parentService.createParent(request.getParentDetails());
 
         Admission admission = new Admission();
