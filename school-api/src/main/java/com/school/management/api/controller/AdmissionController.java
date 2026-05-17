@@ -2,10 +2,8 @@ package com.school.management.api.controller;
 
 import com.school.management.api.constants.Constants;
 import com.school.management.api.model.requstModel.AdmissionRequest;
-import com.school.management.api.model.requstModel.StudentRequestDto;
 import com.school.management.api.model.requstModel.UserRequestDto;
 import com.school.management.api.model.responseModel.AdmissionResponse;
-import com.school.management.api.model.responseModel.StudentResponseDto;
 import com.school.management.api.model.responseModel.UserResponse;
 import com.school.management.api.service.AdmissionService;
 import com.school.management.api.service.UserService;

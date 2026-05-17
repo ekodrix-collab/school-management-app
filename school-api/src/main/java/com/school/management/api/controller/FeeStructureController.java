@@ -1,6 +1,5 @@
 package com.school.management.api.controller;
 
-import com.school.management.api.entity.FeeStructure;
 import com.school.management.api.model.requstModel.FeeStructureRequest;
 import com.school.management.api.model.responseModel.FeeStructureResponse;
 import com.school.management.api.service.FeeStructureService;

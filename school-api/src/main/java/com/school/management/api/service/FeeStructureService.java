@@ -47,7 +47,7 @@ public class FeeStructureService {
         feeStructure.setUpdatedAt(LocalDateTime.now());
 
         FeeStructure saveFeeStructure = feeStructureRepository.save(feeStructure);
-        return mapToResponse(feeStructure);
+        return mapToResponse(saveFeeStructure);
 
     }
 

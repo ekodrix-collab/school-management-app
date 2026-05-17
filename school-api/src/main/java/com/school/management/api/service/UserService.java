@@ -34,7 +34,7 @@ public class UserService {
 
     @Transactional
     public UserResponse createUser(UserRequestDto request){
-        String role = request.getRole() != null ? request.getRole() : AuthUtil.getCurrentRole();
+        // String role = request.getRole() != null ? request.getRole() : AuthUtil.getCurrentRole();
         String schoolId = request.getSchoolId() != null ? request.getSchoolId() : AuthUtil.getCurrentSchoolId();
 
         if (request.getMobile() != null) {
