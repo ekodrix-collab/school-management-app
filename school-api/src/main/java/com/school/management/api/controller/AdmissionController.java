@@ -8,10 +8,9 @@ import com.school.management.api.model.responseModel.UserResponse;
 import com.school.management.api.service.AdmissionService;
 import com.school.management.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(Constants.ADMIN_ROUTE)
@@ -33,10 +32,33 @@ public class AdmissionController {
         return userService.createUser(request);
     }
 
+    @GetMapping("/admission/all")
+    public List<AdmissionResponse> getAllAdmissions() {
+        return admissionService.getAllAdmissions();
+    }
 
-    //get
-    //edit
-    //delete
-    //get total admission filter by academic year
+    @GetMapping("/admission/{admissionId}")
+    public AdmissionResponse getAdmissionById(@PathVariable String admissionId) {
+        return admissionService.getAdmissionById(admissionId);
+    }
 
+    @PutMapping("/admission/{admissionId}")
+    public AdmissionResponse updateAdmission(@PathVariable String admissionId, @RequestBody AdmissionRequest request) {
+        return admissionService.updateAdmission(admissionId, request);
+    }
+
+    @DeleteMapping("/admission/{admissionId}")
+    public String deleteAdmission(@PathVariable String admissionId) {
+        return admissionService.deleteAdmission(admissionId);
+    }
+
+    @GetMapping("/admission/total")
+    public long getTotalAdmissionsByAcademicYear(@RequestParam String academicYearId) {
+        return admissionService.getTotalAdmissionsByAcademicYear(academicYearId);
+    }
+
+    @GetMapping("/admission/filter-by-academic-year")
+    public List<AdmissionResponse> getAdmissionsByAcademicYear(@RequestParam String academicYearId) {
+        return admissionService.getAdmissionsByAcademicYear(academicYearId);
+    }
 }

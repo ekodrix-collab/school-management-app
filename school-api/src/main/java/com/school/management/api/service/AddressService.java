@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @Service
 public class AddressService {
@@ -44,5 +45,23 @@ public class AddressService {
         Address saveAddress = addressRepository.save(address);
         return mapperService.toCreateAddress(saveAddress);
 
+    }
+
+    public List<AddressResponse> getAllAddresses() {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        return addressRepository.findBySchoolId(schoolId).stream()
+                .map(mapperService::toCreateAddress)
+                .toList();
+    }
+
+    public AddressResponse getAddressById(String addressId) {
+        return addressRepository.findByAddressId(addressId)
+                .map(mapperService::toCreateAddress)
+                .orElseThrow(() -> new RuntimeException("Address not found with id: " + addressId));
+    }
+
+    public String deleteAddress(String addressId) {
+        addressRepository.deleteByAddressId(addressId);
+        return "Address deleted successfully";
     }
 }
