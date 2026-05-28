@@ -5,6 +5,7 @@ import com.school.management.api.entity.PasswordResetToken;
 import com.school.management.api.entity.User;
 import com.school.management.api.exception.BadRequestException;
 import com.school.management.api.exception.ResourceNotFoundException;
+import com.school.management.api.exception.UnauthorizedException;
 import com.school.management.api.model.requstModel.ForgotPasswordRequest;
 import com.school.management.api.model.requstModel.LoginRequest;
 import com.school.management.api.model.requstModel.RegisterRequest;
@@ -60,6 +61,10 @@ public class AuthService {
         Date expiry = jwtTokenProvider.getExpiryFromToken(token);
 
         User user = userRepository.findByMobile(request.getMobile()).orElseThrow();
+
+        if(!user.getIsActive()){
+            throw new UnauthorizedException("user not found");
+        }
 
         return AuthResponse.builder()
                 .tokenType("Bearer")
