@@ -81,6 +81,68 @@ public class StudentMarkService {
                 .collect(Collectors.toList());
     }
 
+    public List<StudentMarkResponse> getAllStudentMarks() {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        List<StudentMark> marks = studentMarkRepository.findBySchoolId(schoolId);
+        return marks.stream().map(this::mapToResponse).collect(Collectors.toList());
+    }
+
+    public StudentMarkResponse getStudentMarkById(String studentMarkId) {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        StudentMark mark = studentMarkRepository.findByStudentMarkId(studentMarkId)
+                .orElseThrow(() -> new RuntimeException("Student mark not found"));
+
+        if (!mark.getSchoolId().equals(schoolId)) {
+            throw new RuntimeException("Unauthorized to view this student mark");
+        }
+
+        return mapToResponse(mark);
+    }
+
+    public StudentMarkResponse updateStudentMark(String studentMarkId, StudentMarkRequest request) {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        StudentMark studentMark = studentMarkRepository.findByStudentMarkId(studentMarkId)
+                .orElseThrow(() -> new RuntimeException("Student mark not found"));
+
+        if (!studentMark.getSchoolId().equals(schoolId)) {
+            throw new RuntimeException("Unauthorized to update this student mark");
+        }
+
+        ExamSubject examSubject = examSubjectRepository.findByExamSubjectIdAndSchoolId(studentMark.getExamSubjectId(), schoolId)
+                .orElseThrow(() -> new RuntimeException("Exam subject not found"));
+
+        if (request.getObtainedMark() > examSubject.getMaxMark()) {
+            throw new RuntimeException("Obtained mark cannot be greater than max mark");
+        }
+
+        Double percentage = (request.getObtainedMark() / examSubject.getMaxMark()) * 100;
+        String grade = calculateGrade(percentage);
+        String resultStatus = request.getObtainedMark() >= examSubject.getPassMark() ? "PASS" : "FAIL";
+
+        studentMark.setObtainedMark(request.getObtainedMark());
+        studentMark.setPercentage(percentage);
+        studentMark.setGrade(grade);
+        studentMark.setResultStatus(resultStatus);
+        studentMark.setAttendanceStatus(request.getAttendanceStatus());
+        studentMark.setRemarks(request.getRemarks());
+        studentMark.setUpdatedAt(LocalDateTime.now());
+
+        StudentMark savedStudentMark = studentMarkRepository.save(studentMark);
+        return mapToResponse(savedStudentMark);
+    }
+
+    public void deleteStudentMark(String studentMarkId) {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        StudentMark studentMark = studentMarkRepository.findByStudentMarkId(studentMarkId)
+                .orElseThrow(() -> new RuntimeException("Student mark not found"));
+
+        if (!studentMark.getSchoolId().equals(schoolId)) {
+            throw new RuntimeException("Unauthorized to delete this student mark");
+        }
+
+        studentMarkRepository.delete(studentMark);
+    }
+
     private String calculateGrade(Double percentage) {
 
         if (percentage >= 90) {

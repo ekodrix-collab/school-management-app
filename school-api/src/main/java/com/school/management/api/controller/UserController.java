@@ -27,10 +27,6 @@ public class UserController {
         return userService.getUserById(userId);
     }
 
-    //get
-    //edit
-    //delete
-
     @GetMapping("/all")
     public List<UserResponse> getAllUser(){
         return userService.getAllUser();

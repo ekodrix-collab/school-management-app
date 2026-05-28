@@ -81,7 +81,6 @@ public class SchoolClassService {
         sc.setStandard(request.getStandard());
         sc.setDivision(request.getDivision());
         sc.setClassId(request.getStandard() + "-" + request.getDivision());
-//        sc.setClassTeacherId(request.getClassTeacherId());
         sc.setUpdatedAt(LocalDateTime.now());
 
         SchoolClass updated = schoolClassRepository.save(sc);
@@ -91,7 +90,6 @@ public class SchoolClassService {
 
     public void deleteClass(String classId) {
         int deleted = schoolClassRepository.deleteByClassId(classId);
-
         if (deleted == 0) {
             throw new RuntimeException("Class not found");
         }

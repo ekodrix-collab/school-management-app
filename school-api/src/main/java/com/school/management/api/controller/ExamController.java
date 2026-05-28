@@ -22,14 +22,24 @@ public class ExamController {
         return examService.createExam(request);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<ExamResponse> getAllExams(@RequestParam String schoolId, @RequestParam String academicYearId) {
         return examService.getAllExams(schoolId, academicYearId);
-
     }
 
-    //edit
-    //get by id
-    //delete
+    @PutMapping("/{examId}")
+    public ExamResponse updateExam(@PathVariable String examId, @RequestBody ExamRequest request) {
+        return examService.updateExam(examId, request);
+    }
+
+    @GetMapping("/{examId}")
+    public ExamResponse getExamById(@PathVariable String examId) {
+        return examService.getExamById(examId);
+    }
+
+    @DeleteMapping("/{examId}")
+    public String deleteExam(@PathVariable String examId) {
+        return examService.deleteExam(examId);
+    }
 
 }

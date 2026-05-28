@@ -53,11 +53,58 @@ public class SchoolService {
         school.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
         school.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
 
-
         School savedSchool = schoolRepository.save(school);
         return mapperService.toSchoolResponse(savedSchool,address);
-
     }
 
+    public java.util.List<SchoolResponse> getAllSchools() {
+        return schoolRepository.findAll().stream().map(school -> {
+            AddressResponse address = addressService.getAddressById(school.getAddressId());
+            return mapperService.toSchoolResponse(school, address);
+        }).toList();
+    }
+
+    public SchoolResponse getSchoolById(String schoolId) {
+        School school = schoolRepository.findBySchoolId(schoolId)
+                .orElseThrow(() -> new ResourceNotFoundException("School not found"));
+        AddressResponse address = addressService.getAddressById(school.getAddressId());
+        return mapperService.toSchoolResponse(school, address);
+    }
+
+    @Transactional
+    public SchoolResponse updateSchool(String schoolId, SchoolRequestDto request) {
+        String role = AuthUtil.getCurrentRole();
+        if(!Constants.ROLE_SUPER_ADMIN.equalsIgnoreCase(role)){
+            throw new BadRequestException("Super admin can only update school");
+        }
+
+        School school = schoolRepository.findBySchoolId(schoolId)
+                .orElseThrow(() -> new ResourceNotFoundException("School not found"));
+
+        if (request.getEmail() != null) school.setEmail(request.getEmail());
+        if (request.getPhone() != null) school.setPhone(request.getPhone());
+        if (request.getAddress() != null && request.getAddress().getName() != null) {
+            school.setSchoolName(request.getAddress().getName());
+        }
+        school.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
+
+        School savedSchool = schoolRepository.save(school);
+        AddressResponse address = addressService.getAddressById(savedSchool.getAddressId());
+        return mapperService.toSchoolResponse(savedSchool, address);
+    }
+
+    @Transactional
+    public void deleteSchool(String schoolId) {
+        String role = AuthUtil.getCurrentRole();
+        if(!Constants.ROLE_SUPER_ADMIN.equalsIgnoreCase(role)){
+            throw new BadRequestException("Super admin can only delete school");
+        }
+
+        School school = schoolRepository.findBySchoolId(schoolId)
+                .orElseThrow(() -> new ResourceNotFoundException("School not found"));
+
+        addressService.deleteAddress(school.getAddressId());
+        schoolRepository.delete(school);
+    }
 
 }

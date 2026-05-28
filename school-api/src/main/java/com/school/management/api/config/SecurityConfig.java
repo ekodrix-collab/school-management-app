@@ -41,21 +41,152 @@ public class SecurityConfig {
                         .accessDeniedHandler(securityExceptionHandler))
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/school/create").hasAuthority(Constants.ROLE_SUPER_ADMIN)
-                        .requestMatchers("/api/v1/school-class/create").hasAnyAuthority(Constants.ROLE_TEACHER,Constants.ROLE_ADMIN)
-                        .requestMatchers("/api/v1/user/create").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_TEACHER)
-                        .requestMatchers("/api/v1/admin/**").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_SUPER_ADMIN)
-                        .requestMatchers("/api/v1/attendance/**").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_TEACHER)
-                        .requestMatchers("/api/v1/teacher/**").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_TEACHER)
-                        .requestMatchers("/api/v1/mark/**").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_TEACHER)
-                        .requestMatchers("/api/v1/subject/**").hasAnyAuthority(Constants.ROLE_ADMIN,Constants.ROLE_TEACHER)
-                        .requestMatchers("/api/v1/academic-year/**").hasAnyAuthority(Constants.ROLE_ADMIN)
-                        .requestMatchers("/api/v1/teacher-class-subject/**").hasAnyAuthority(Constants.ROLE_ADMIN)
-                        .requestMatchers("/api/v1/student/**")
-                        .hasAnyAuthority(Constants.ROLE_SUPER_ADMIN, Constants.ROLE_ADMIN,Constants.ROLE_PARENT,Constants.ROLE_TEACHER)
-                        .anyRequest().permitAll())
 
+                        // PUBLIC
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+
+                        // SUPER ADMIN
+                        .requestMatchers("/api/v1/school/**")
+                        .hasAuthority(Constants.ROLE_SUPER_ADMIN)
+
+                        // =========================
+                        // ADMIN ONLY ROUTES FIRST
+                        // =========================
+
+                        .requestMatchers("/api/v1/academic-year/admin/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_SUPER_ADMIN)
+
+                        .requestMatchers("/api/v1/address/admin/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_SUPER_ADMIN)
+
+                        .requestMatchers("/api/v1/admission/admin/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_SUPER_ADMIN)
+
+                        .requestMatchers("/api/v1/class-subject/admin/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_SUPER_ADMIN)
+
+                        .requestMatchers("/api/v1/time-table/admin/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_SUPER_ADMIN)
+
+                        .requestMatchers("/api/v1/fee-structures/admin/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_SUPER_ADMIN)
+
+                        .requestMatchers("/api/v1/parents/admin/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_SUPER_ADMIN)
+
+                        .requestMatchers("/api/v1/school-class/admin/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_SUPER_ADMIN)
+
+                        .requestMatchers("/api/v1/student/admin/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_SUPER_ADMIN)
+
+                        .requestMatchers("/api/v1/subject/admin/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_SUPER_ADMIN)
+
+                        .requestMatchers("/api/v1/teacher-class-subject/admin/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_SUPER_ADMIN)
+
+                        .requestMatchers("/api/v1/teacher/admin/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_SUPER_ADMIN)
+
+                        // =========================
+                        // SHARED ROUTES
+                        // =========================
+
+                        .requestMatchers("/api/v1/academic-year/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/address/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/admission/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/attendance/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/class-subject/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/time-table/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/exam/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/exam-subjects/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/fee-payments/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/fee-structures/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/parents/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER,
+                                Constants.ROLE_PARENT)
+
+                        .requestMatchers("/api/v1/school-class/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/student/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/student-fees/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/student-marks/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/subject/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/teacher-class-subject/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/teacher/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_SUPER_ADMIN,
+                                Constants.ROLE_TEACHER)
+
+                        .requestMatchers("/api/v1/user/**")
+                        .hasAnyAuthority(Constants.ROLE_ADMIN,
+                                Constants.ROLE_TEACHER,
+                                Constants.ROLE_SUPER_ADMIN)
+
+                        .anyRequest().authenticated()
+                )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
