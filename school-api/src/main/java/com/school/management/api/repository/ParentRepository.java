@@ -10,4 +10,8 @@ import java.util.Optional;
 public interface ParentRepository extends JpaRepository<Parent,Long> {
 
     Optional<Parent> findByMobile(String mobile);
+
+    java.util.List<Parent> findBySchoolId(String schoolId);
+
+    Optional<Parent> findByParentId(java.util.UUID parentId);
 }

@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface SchoolRepository extends JpaRepository<School,Long> {
 
     boolean existsBySchoolId(String schoolId);
+
+    java.util.Optional<School> findBySchoolId(String schoolId);
 }

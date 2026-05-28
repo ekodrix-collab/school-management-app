@@ -21,9 +21,16 @@ public class Constants {
     public static final String SUBJECT_ROUTE = "/api/v1/subject";
     public static final String EXAM_ROUTE = "/api/v1/exam";
     public static final String ACADEMIC_YEAR_ROUTE = "/api/v1/academic-year";
-    public static final String SUBJECT_CLASS_ROUTE = "/api/v1/class-subject";
+    public static final String CLASS_SUBJECT_ROUTE = "/api/v1/class-subject";
     public static final String TEACHER_SUBJECT_CLASS_ROUTE = "/api/v1/teacher-class-subject";
-    public static final String ADMIN_ROUTE = "/api/v1/admin" ;
+    public static final String ADMISSION_ROUTE = "/api/v1/admission" ;
+    public static final String ADDRESS_ROUTE = "/api/v1/address";
+    public static final String CLASS_TIME_TABLE ="/api/v1/time-table";
+    public static final String EXAM_SUBJECT_ROUTE = "/api/v1/exam-subjects";
+    public static final String FEE_PAYMENT = "/api/v1/fee-payments";
+    public static final String FEE_PAYMENT_STRUCTURE = "/api/v1/fee-structures";
+    public static final String STUDENT_FEE = "/api/v1/student-fees";
+    public static final String STUDENT_MARK_ROUTE = "/api/v1/student-marks";
 
     //GENDER
     public static final String MALE = "MALE";
