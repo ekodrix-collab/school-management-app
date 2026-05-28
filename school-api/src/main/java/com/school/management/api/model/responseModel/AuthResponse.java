@@ -42,4 +42,7 @@ public class AuthResponse {
     @JsonProperty(value = "expiry_time_ms")
     private long expiryTimeMs;
 
+    @JsonProperty(value = "is_first_login")
+    private Boolean isFirstLogin;
+
 }
