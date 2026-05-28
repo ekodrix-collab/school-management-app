@@ -24,7 +24,7 @@ public class User {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "mobile", nullable = false)
+    @Column(name = "mobile", nullable = false,unique = true)
     private String mobile;
 
     @Column(name = "password", nullable = false)
