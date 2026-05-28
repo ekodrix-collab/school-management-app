@@ -18,7 +18,7 @@ public class AcademicYearController {
 
     private final AcademicYearService academicYearService;
 
-    @PostMapping("/create")
+    @PostMapping("/admin/create")
     public ResponseEntity<AcademicYearResponseDto> createAcademicYear(@RequestBody AcademicYearRequestDto requestDto) {
         AcademicYearResponseDto response = academicYearService.createAcademicYear(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -36,14 +36,14 @@ public class AcademicYearController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PutMapping("/{academicYearId}")
+    @PutMapping("/admin/{academicYearId}")
     public ResponseEntity<AcademicYearResponseDto> updateAcademicYear(@PathVariable String academicYearId,
             @RequestBody AcademicYearRequestDto requestDto) {
         AcademicYearResponseDto response = academicYearService.updateAcademicYear(academicYearId, requestDto);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @DeleteMapping("/{academicYearId}")
+    @DeleteMapping("/admin/{academicYearId}")
     public ResponseEntity<String> deleteAcademicYear(@PathVariable String academicYearId) {
         String response = academicYearService.deleteAcademicYear(academicYearId);
         return ResponseEntity.status(HttpStatus.OK).body(response);

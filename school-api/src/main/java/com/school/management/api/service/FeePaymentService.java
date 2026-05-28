@@ -75,6 +75,95 @@ public class FeePaymentService {
                 .collect(Collectors.toList());
     }
 
+    public List<FeePaymentResponse> getAllPayments() {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        List<FeePayment> payments = feePaymentRepository.findBySchoolId(schoolId);
+        return payments.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    public FeePaymentResponse updateFeePayment(String paymentId, FeePaymentRequest request) {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        FeePayment feePayment = feePaymentRepository.findByPaymentId(paymentId)
+                .orElseThrow(() -> new RuntimeException("Fee payment not found"));
+
+        if (!feePayment.getSchoolId().equals(schoolId)) {
+            throw new RuntimeException("Unauthorized to update this fee payment");
+        }
+
+        StudentFee studentFee = studentFeeRepository.findByStudentFeeId(feePayment.getStudentFeeId())
+                .orElseThrow(() -> new RuntimeException("Student fee not found"));
+
+        Double previousPaidAmount = feePayment.getPaidAmount();
+        Double newPaidAmountRequest = request.getPaidAmount();
+        Double diff = newPaidAmountRequest - previousPaidAmount;
+        
+        if (diff > studentFee.getBalanceAmount()) {
+            throw new RuntimeException("Updated paid amount exceeds total balance amount");
+        }
+
+        feePayment.setPaidAmount(newPaidAmountRequest);
+        feePayment.setPaymentMethod(request.getPaymentMethod());
+        feePayment.setTransactionReference(request.getTransactionReference());
+        feePayment.setRemarks(request.getRemarks());
+        feePayment.setUpdatedAt(LocalDateTime.now());
+
+        FeePayment savedPayment = feePaymentRepository.save(feePayment);
+
+        Double updatedPaidAmount = studentFee.getPaidAmount() + diff;
+        Double updatedBalance = studentFee.getTotalAmount() - updatedPaidAmount;
+
+        studentFee.setPaidAmount(updatedPaidAmount);
+        studentFee.setBalanceAmount(updatedBalance);
+
+        if (updatedBalance <= 0) {
+            studentFee.setStatus("PAID");
+        } else if (updatedPaidAmount <= 0) {
+            studentFee.setStatus("PENDING");
+        } else {
+            studentFee.setStatus("PARTIAL");
+        }
+
+        studentFee.setUpdatedAt(LocalDateTime.now());
+        studentFeeRepository.save(studentFee);
+
+        return mapToResponse(savedPayment);
+    }
+
+    public void deleteFeePayment(String paymentId) {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        FeePayment feePayment = feePaymentRepository.findByPaymentId(paymentId)
+                .orElseThrow(() -> new RuntimeException("Fee payment not found"));
+
+        if (!feePayment.getSchoolId().equals(schoolId)) {
+            throw new RuntimeException("Unauthorized to delete this fee payment");
+        }
+
+        StudentFee studentFee = studentFeeRepository.findByStudentFeeId(feePayment.getStudentFeeId())
+                .orElseThrow(() -> new RuntimeException("Student fee not found"));
+
+        Double previousPaidAmount = feePayment.getPaidAmount();
+        Double updatedPaidAmount = studentFee.getPaidAmount() - previousPaidAmount;
+        Double updatedBalance = studentFee.getTotalAmount() - updatedPaidAmount;
+
+        studentFee.setPaidAmount(updatedPaidAmount);
+        studentFee.setBalanceAmount(updatedBalance);
+
+        if (updatedPaidAmount <= 0) {
+            studentFee.setStatus("PENDING");
+        } else if (updatedBalance <= 0) {
+            studentFee.setStatus("PAID");
+        } else {
+            studentFee.setStatus("PARTIAL");
+        }
+
+        studentFee.setUpdatedAt(LocalDateTime.now());
+        studentFeeRepository.save(studentFee);
+
+        feePaymentRepository.delete(feePayment);
+    }
+
     private FeePaymentResponse mapToResponse(FeePayment feePayment) {
 
         FeePaymentResponse response = new FeePaymentResponse();

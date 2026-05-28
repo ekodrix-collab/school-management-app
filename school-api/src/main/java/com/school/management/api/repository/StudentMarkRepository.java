@@ -16,4 +16,6 @@ public interface StudentMarkRepository extends JpaRepository<StudentMark, Long> 
 
     List<StudentMark> findByStudentId(String studentId);
 
+    List<StudentMark> findBySchoolId(String schoolId);
+
 }

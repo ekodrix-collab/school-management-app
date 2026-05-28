@@ -20,7 +20,7 @@ public class TeacherController {
     @Autowired
     TeacherService teacherService;
 
-    @PostMapping("/on-board")
+    @PostMapping("/admin/on-board")
     public OnBoardResponse onBoardTeacher(@RequestBody OnboardRequest request){
         return teacherService.createTeacher(request);
     }
@@ -37,13 +37,13 @@ public class TeacherController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PutMapping("/{teacherId}")
+    @PutMapping("/admin/{teacherId}")
     public ResponseEntity<TeacherResponseDto> updateTeacher(@PathVariable UUID teacherId, @RequestBody OnboardRequest request){
         TeacherResponseDto response = teacherService.updateTeacher(teacherId, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @DeleteMapping("/{teacherId}")
+    @DeleteMapping("/admin/{teacherId}")
     public ResponseEntity<String> deleteTeacher(@PathVariable UUID teacherId){
         String response = teacherService.deleteTeacher(teacherId);
         return ResponseEntity.status(HttpStatus.OK).body(response);

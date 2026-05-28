@@ -16,17 +16,17 @@ public class SubjectController {
     @Autowired
     private SubjectService subjectService;
 
-    @PostMapping("/create")
+    @PostMapping("/admin/create")
     public SubjectResponseDto createSubject(@RequestBody SubjectRequestDto requestDto) {
         return subjectService.createSubject(requestDto);
     }
 
-    @PutMapping("/{subjectId}")
+    @PutMapping("/admin/{subjectId}")
     public SubjectResponseDto updateSubject(@PathVariable String subjectId, @RequestBody SubjectRequestDto requestDto) {
         return subjectService.updateSubject(subjectId, requestDto);
     }
 
-    @DeleteMapping("/{subjectId}")
+    @DeleteMapping("/admin/{subjectId}")
     public String deleteSubject(@PathVariable String subjectId) {
         return subjectService.deleteSubject(subjectId);
     }

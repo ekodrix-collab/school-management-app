@@ -57,4 +57,57 @@ public class ParentService {
         return mapperService.toParentResponse(saved);
     }
 
+    public java.util.List<ParentResponse> getAllParents() {
+        String schoolId = com.school.management.api.service.authService.AuthUtil.getCurrentSchoolId();
+        java.util.List<Parent> parents = parentRepository.findBySchoolId(schoolId);
+        return parents.stream()
+                .map(mapperService::toParentResponse)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    public ParentResponse getParentById(String parentId) {
+        String schoolId = com.school.management.api.service.authService.AuthUtil.getCurrentSchoolId();
+        Parent parent = parentRepository.findByParentId(java.util.UUID.fromString(parentId))
+                .orElseThrow(() -> new RuntimeException("Parent not found"));
+
+        if (!parent.getSchoolId().equals(schoolId)) {
+            throw new RuntimeException("Unauthorized to view this parent");
+        }
+
+        return mapperService.toParentResponse(parent);
+    }
+
+    @Transactional
+    public ParentResponse updateParent(String parentId, ParentRequestDto request) {
+        String schoolId = com.school.management.api.service.authService.AuthUtil.getCurrentSchoolId();
+        Parent parent = parentRepository.findByParentId(java.util.UUID.fromString(parentId))
+                .orElseThrow(() -> new RuntimeException("Parent not found"));
+
+        if (!parent.getSchoolId().equals(schoolId)) {
+            throw new RuntimeException("Unauthorized to update this parent");
+        }
+
+        parent.setMobile(request.getMobile());
+        parent.setName(request.getName());
+        parent.setAlternateMobile(request.getAlternateMobile());
+        parent.setAddressId(request.getAddressId());
+        parent.setUpdatedAt(LocalDateTime.now(ZoneId.of(Constants.INDIAN_TIME)));
+
+        Parent saved = parentRepository.save(parent);
+        return mapperService.toParentResponse(saved);
+    }
+
+    @Transactional
+    public void deleteParent(String parentId) {
+        String schoolId = com.school.management.api.service.authService.AuthUtil.getCurrentSchoolId();
+        Parent parent = parentRepository.findByParentId(java.util.UUID.fromString(parentId))
+                .orElseThrow(() -> new RuntimeException("Parent not found"));
+
+        if (!parent.getSchoolId().equals(schoolId)) {
+            throw new RuntimeException("Unauthorized to delete this parent");
+        }
+
+        parentRepository.delete(parent);
+    }
+
 }

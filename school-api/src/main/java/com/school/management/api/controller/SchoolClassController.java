@@ -19,7 +19,7 @@ public class SchoolClassController {
     @Autowired
     private SchoolClassService schoolClassService;
 
-    @PostMapping("/create")
+    @PostMapping("/admin/create")
     public ResponseEntity<SchoolClassResponse> createClass(@RequestBody SchoolClassRequest request) {
         return new ResponseEntity<>(schoolClassService.createClass(request), HttpStatus.CREATED);
     }
@@ -34,12 +34,12 @@ public class SchoolClassController {
         return ResponseEntity.ok(schoolClassService.getClassById(classId));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public ResponseEntity<SchoolClassResponse> updateClass(@PathVariable Long id, @RequestBody SchoolClassRequest request) {
         return ResponseEntity.ok(schoolClassService.updateClass(id, request));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<String> deleteClass(@PathVariable String id) {
         schoolClassService.deleteClass(id);
         return ResponseEntity.ok("Class deleted successfully");

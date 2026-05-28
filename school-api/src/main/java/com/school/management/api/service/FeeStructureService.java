@@ -63,6 +63,65 @@ public class FeeStructureService {
                 .collect(Collectors.toList());
     }
 
+    public FeeStructureResponse getFeeStructureById(String feeStructureId) {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        FeeStructure feeStructure = feeStructureRepository.findByFeeStructureId(feeStructureId)
+                .orElseThrow(() -> new RuntimeException("Fee structure not found"));
+        
+        if (!feeStructure.getSchoolId().equals(schoolId)) {
+            throw new RuntimeException("Unauthorized to view this fee structure");
+        }
+        
+        return mapToResponse(feeStructure);
+    }
+
+    public FeeStructureResponse updateFeeStructure(String feeStructureId, FeeStructureRequest request) {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        FeeStructure feeStructure = feeStructureRepository.findByFeeStructureId(feeStructureId)
+                .orElseThrow(() -> new RuntimeException("Fee structure not found"));
+
+        if (!feeStructure.getSchoolId().equals(schoolId)) {
+            throw new RuntimeException("Unauthorized to update this fee structure");
+        }
+
+        if (!feeStructure.getFeeName().equals(request.getFeeName()) ||
+            !feeStructure.getAcademicYearId().equals(request.getAcademicYearId()) ||
+            !feeStructure.getClassId().equals(request.getClassId())) {
+            Boolean alreadyExists = feeStructureRepository.existsBySchoolIdAndAcademicYearIdAndClassIdAndFeeName(
+                    schoolId,
+                    request.getAcademicYearId(),
+                    request.getClassId(),
+                    request.getFeeName());
+            if (alreadyExists) {
+                throw new RuntimeException("Fee structure with this name already exists");
+            }
+        }
+
+        feeStructure.setAcademicYearId(request.getAcademicYearId());
+        feeStructure.setClassId(request.getClassId());
+        feeStructure.setFeeName(request.getFeeName());
+        feeStructure.setFeeType(request.getFeeType());
+        feeStructure.setAmount(request.getAmount());
+        feeStructure.setDueDate(request.getDueDate());
+        feeStructure.setDescription(request.getDescription());
+        feeStructure.setUpdatedAt(LocalDateTime.now());
+
+        FeeStructure savedFeeStructure = feeStructureRepository.save(feeStructure);
+        return mapToResponse(savedFeeStructure);
+    }
+
+    public void deleteFeeStructure(String feeStructureId) {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        FeeStructure feeStructure = feeStructureRepository.findByFeeStructureId(feeStructureId)
+                .orElseThrow(() -> new RuntimeException("Fee structure not found"));
+
+        if (!feeStructure.getSchoolId().equals(schoolId)) {
+            throw new RuntimeException("Unauthorized to delete this fee structure");
+        }
+
+        feeStructureRepository.delete(feeStructure);
+    }
+
     private FeeStructureResponse mapToResponse(FeeStructure feeStructure) {
 
         FeeStructureResponse response = new FeeStructureResponse();

@@ -76,6 +76,70 @@ public class StudentFeeService {
                 .collect(Collectors.toList());
     }
 
+    public List<StudentFeeResponse> getAllStudentFees() {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        List<StudentFee> studentFees = studentFeeRepository.findBySchoolId(schoolId);
+        return studentFees.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    public StudentFeeResponse updateStudentFee(String studentFeeId, StudentFeeRequest request) {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        StudentFee studentFee = studentFeeRepository.findByStudentFeeId(studentFeeId)
+                .orElseThrow(() -> new RuntimeException("Student fee not found"));
+
+        if (!studentFee.getSchoolId().equals(schoolId)) {
+            throw new RuntimeException("Unauthorized to update this student fee");
+        }
+
+        FeeStructure feeStructure = feeStructureRepository.findByFeeStructureId(studentFee.getFeeStructureId())
+                .orElseThrow(() -> new RuntimeException("Fee structure not found"));
+
+        Double discount = request.getDiscountAmount() != null
+                ? request.getDiscountAmount()
+                : studentFee.getDiscountAmount();
+
+        Double fine = request.getFineAmount() != null
+                ? request.getFineAmount()
+                : studentFee.getFineAmount();
+
+        Double totalAmount = feeStructure.getAmount() + fine - discount;
+
+        studentFee.setDiscountAmount(discount);
+        studentFee.setFineAmount(fine);
+        studentFee.setTotalAmount(totalAmount);
+
+        Double balanceAmount = totalAmount - studentFee.getPaidAmount();
+        studentFee.setBalanceAmount(balanceAmount);
+
+        if (balanceAmount <= 0) {
+            studentFee.setStatus("PAID");
+        } else if (studentFee.getPaidAmount() > 0) {
+            studentFee.setStatus("PARTIAL");
+        } else {
+            studentFee.setStatus("PENDING");
+        }
+
+        studentFee.setRemarks(request.getRemarks());
+        studentFee.setUpdatedAt(LocalDateTime.now());
+
+        StudentFee savedStudentFee = studentFeeRepository.save(studentFee);
+        return mapToResponse(savedStudentFee);
+    }
+
+    public void deleteStudentFee(String studentFeeId) {
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        StudentFee studentFee = studentFeeRepository.findByStudentFeeId(studentFeeId)
+                .orElseThrow(() -> new RuntimeException("Student fee not found"));
+
+        if (!studentFee.getSchoolId().equals(schoolId)) {
+            throw new RuntimeException("Unauthorized to delete this student fee");
+        }
+
+        studentFeeRepository.delete(studentFee);
+    }
+
     private StudentFeeResponse mapToResponse(StudentFee studentFee) {
 
         StudentFeeResponse response = new StudentFeeResponse();
