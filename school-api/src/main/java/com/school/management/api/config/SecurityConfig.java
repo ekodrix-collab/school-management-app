@@ -46,8 +46,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/**").permitAll()
 
                         // SUPER ADMIN
-                        .requestMatchers("/api/v1/school/**")
-                        .hasAuthority(Constants.ROLE_SUPER_ADMIN)
+                        .requestMatchers("/api/v1/school/**").hasAuthority(Constants.ROLE_SUPER_ADMIN)
+                        .requestMatchers("/api/v1/super-admin").hasAnyAuthority(Constants.ROLE_SUPER_ADMIN)
 
                         // =========================
                         // ADMIN ONLY ROUTES FIRST
