@@ -4,6 +4,8 @@ import com.school.management.api.constants.Constants;
 import com.school.management.api.entity.Student;
 import com.school.management.api.model.requstModel.StudentRequestDto;
 import com.school.management.api.model.responseModel.StudentResponseDto;
+import com.school.management.api.model.responseModel.StudentTotalCount;
+import com.school.management.api.model.responseModel.TeacherTotalCount;
 import com.school.management.api.repository.StudentRepository;
 import com.school.management.api.service.authService.AuthUtil;
 import com.school.management.api.service.mapper.IdGenerator;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class StudentService {
@@ -104,5 +108,18 @@ public class StudentService {
 
         studentRepository.delete(student);
     }
+//
+//    public List<StudentTotalCount> getStudentTotalCount(){
+//
+//        Long studentCount =  studentRepository.getStudentCount();
+//        Long currentMonthStudentGrowth = studentRepository.getCurrentMonthStudentGrowth();
+//
+//        StudentTotalCount studentTotalCount = new StudentTotalCount();
+//        studentTotalCount.setStudentCount(studentCount);
+//        studentTotalCount.setCurrentMonthStudentGrowth(currentMonthStudentGrowth);
+//
+//        return Collections.singletonList(studentTotalCount);
+//
+//    }
 
 }

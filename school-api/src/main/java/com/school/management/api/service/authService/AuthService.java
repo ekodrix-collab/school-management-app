@@ -6,13 +6,15 @@ import com.school.management.api.entity.User;
 import com.school.management.api.exception.BadRequestException;
 import com.school.management.api.exception.ResourceNotFoundException;
 import com.school.management.api.exception.UnauthorizedException;
-import com.school.management.api.model.requstModel.ForgotPasswordRequest;
 import com.school.management.api.model.requstModel.LoginRequest;
 import com.school.management.api.model.requstModel.RegisterRequest;
-import com.school.management.api.model.requstModel.ResetPasswordRequest;
 import com.school.management.api.model.responseModel.AuthResponse;
-import com.school.management.api.model.responseModel.ForgotPasswordResponse;
 import com.school.management.api.model.responseModel.MessageResponse;
+import com.school.management.api.model.responseModel.VerifyOtpResponse;
+import com.school.management.api.model.requstModel.ForgotPasswordEmailRequest;
+import com.school.management.api.model.requstModel.ResetPasswordEmailRequest;
+import com.school.management.api.model.requstModel.VerifyOtpRequest;
+import com.school.management.api.service.EmailService;
 import com.school.management.api.repository.BlacklistedTokenRepository;
 import com.school.management.api.repository.PasswordResetTokenRepository;
 import com.school.management.api.repository.UserRepository;
@@ -46,10 +48,7 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final BlacklistedTokenRepository blacklistedTokenRepository;
-
-    // ─────────────────────────────────────────────────────────────
-    //  LOGIN
-    // ─────────────────────────────────────────────────────────────
+    private final EmailService emailService;
 
     public AuthResponse login(LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
@@ -79,10 +78,6 @@ public class AuthService {
                 .isFirstLogin(user.getIsFirstLogin())
                 .build();
     }
-
-    // ─────────────────────────────────────────────────────────────
-    //  REGISTER
-    // ─────────────────────────────────────────────────────────────
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
@@ -132,54 +127,76 @@ public class AuthService {
                 .build();
     }
 
-    // ─────────────────────────────────────────────────────────────
-    //  FORGOT PASSWORD  (step 1 — request reset token)
-    // ─────────────────────────────────────────────────────────────
-
     @Transactional
-    public ForgotPasswordResponse forgotPassword(ForgotPasswordRequest request) {
-        userRepository.findByMobile(request.getMobile())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "No account found with mobile: " + request.getMobile()));
+    public MessageResponse sendEmailOtp(ForgotPasswordEmailRequest request) {
+        userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("No account found with email: " + request.getEmail()));
 
-        // Invalidate any previous active tokens for this mobile
-        passwordResetTokenRepository.invalidateAllActiveTokensForMobile(request.getMobile());
+        passwordResetTokenRepository.invalidateAllActiveTokensForEmail(request.getEmail());
 
+        String otp = String.format("%06d", new java.util.Random().nextInt(999999));
         String resetToken = UUID.randomUUID().toString();
-        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(RESET_TOKEN_TTL_MINUTES);
+        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(10); // 10 minutes expiry
 
-        PasswordResetToken prt = new PasswordResetToken(request.getMobile(), resetToken, expiresAt);
+        PasswordResetToken prt = new PasswordResetToken(request.getEmail(), otp, resetToken, expiresAt);
         passwordResetTokenRepository.save(prt);
 
-        return ForgotPasswordResponse.builder()
-                .message("Password reset token generated successfully. Use the reset_token to set your new password.")
-                .resetToken(resetToken)
-                .expiresInMinutes(RESET_TOKEN_TTL_MINUTES)
+        emailService.sendOtpEmail(request.getEmail(), otp);
+
+        return MessageResponse.builder()
+                .message("OTP sent to your email.")
+                .success(true)
                 .build();
     }
 
-    // ─────────────────────────────────────────────────────────────
-    //  RESET PASSWORD  (step 2 — submit new password)
-    // ─────────────────────────────────────────────────────────────
+    @Transactional
+    public VerifyOtpResponse verifyEmailOtp(VerifyOtpRequest request) {
+        PasswordResetToken prt = passwordResetTokenRepository.findByEmailAndOtp(request.getEmail(), request.getOtp())
+                .orElseThrow(() -> new BadRequestException("Invalid OTP"));
+
+        if (Boolean.TRUE.equals(prt.getIsUsed())) {
+            throw new BadRequestException("OTP has already been used");
+        }
+
+        if (prt.isExpired()) {
+            throw new BadRequestException("OTP has expired. Please request a new one.");
+        }
+
+        prt.setOtpVerified(true);
+        passwordResetTokenRepository.save(prt);
+
+        return VerifyOtpResponse.builder()
+                .message("OTP verified successfully")
+                .token(prt.getToken())
+                .build();
+    }
 
     @Transactional
-    public MessageResponse resetPassword(ResetPasswordRequest request) {
+    public MessageResponse resetPasswordWithEmailOtp(ResetPasswordEmailRequest request) {
         if (!request.getNewPassword().equals(request.getConfirmPassword())) {
             throw new BadRequestException("Passwords do not match");
         }
 
-        PasswordResetToken prt = passwordResetTokenRepository.findByToken(request.getResetToken())
+        PasswordResetToken prt = passwordResetTokenRepository.findByEmailAndToken(request.getEmail(), request.getToken())
                 .orElseThrow(() -> new BadRequestException("Invalid reset token"));
+
+        if (!Boolean.TRUE.equals(prt.getOtpVerified())) {
+            throw new BadRequestException("OTP was not verified");
+        }
 
         if (Boolean.TRUE.equals(prt.getIsUsed())) {
             throw new BadRequestException("Reset token has already been used");
         }
 
         if (prt.isExpired()) {
-            throw new BadRequestException("Reset token has expired. Please request a new one.");
+            throw new BadRequestException("Reset token has expired.");
         }
 
-        User user = userRepository.findByMobile(prt.getMobile())
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            throw new BadRequestException("Passwords do not match");
+        }
+
+        User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
@@ -195,10 +212,6 @@ public class AuthService {
                 .success(true)
                 .build();
     }
-
-    // ─────────────────────────────────────────────────────────────
-    //  LOGOUT  (blacklist current JWT)
-    // ─────────────────────────────────────────────────────────────
 
     @Transactional
     public MessageResponse logout(String bearerHeader) {
@@ -227,7 +240,7 @@ public class AuthService {
 
             blacklistedTokenRepository.save(new BlacklistedToken(token, expiresAt));
         } catch (Exception e) {
-            // Token is already invalid / expired — nothing to blacklist
+            throw new UnauthorizedException("Token is expired or invalid");
         }
 
         return MessageResponse.builder()

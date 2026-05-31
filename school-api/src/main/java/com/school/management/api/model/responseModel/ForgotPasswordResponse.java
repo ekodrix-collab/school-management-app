@@ -15,11 +15,6 @@ public class ForgotPasswordResponse {
     @JsonProperty(value = "message")
     private String message;
 
-    /**
-     * The opaque reset token the client must supply to /auth/reset-password.
-     * In production this should be delivered via email / SMS instead of
-     * being returned directly in the response body.
-     */
     @JsonProperty(value = "reset_token")
     private String resetToken;
 

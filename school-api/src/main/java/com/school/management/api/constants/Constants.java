@@ -31,6 +31,7 @@ public class Constants {
     public static final String FEE_PAYMENT_STRUCTURE = "/api/v1/fee-structures";
     public static final String STUDENT_FEE = "/api/v1/student-fees";
     public static final String STUDENT_MARK_ROUTE = "/api/v1/student-marks";
+    public static final String SUPER_ADMIN_ROUTE = "/api/v1/super-admin";
 
     //GENDER
     public static final String MALE = "MALE";

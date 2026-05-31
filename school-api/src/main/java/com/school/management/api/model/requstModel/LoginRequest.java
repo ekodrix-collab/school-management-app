@@ -9,9 +9,6 @@ public class LoginRequest {
     @JsonProperty(value = "mobile")
     private String mobile;
 
-    @JsonProperty(value = "mail")
-    private String mail;
-
     @JsonProperty(value = "password")
     private String password;
 }

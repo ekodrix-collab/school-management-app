@@ -7,6 +7,7 @@ import com.school.management.api.exception.ResourceNotFoundException;
 import com.school.management.api.model.requstModel.SchoolRequestDto;
 import com.school.management.api.model.responseModel.AddressResponse;
 import com.school.management.api.model.responseModel.SchoolResponse;
+import com.school.management.api.model.responseModel.SchoolTotalCount;
 import com.school.management.api.repository.SchoolRepository;
 import com.school.management.api.service.authService.AuthUtil;
 import com.school.management.api.service.mapper.MapperService;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class SchoolService {
@@ -106,5 +109,18 @@ public class SchoolService {
         addressService.deleteAddress(school.getAddressId());
         schoolRepository.delete(school);
     }
+
+//    public List<SchoolTotalCount> getSchoolTotalCount(){
+//
+//       Long schoolCount =  schoolRepository.getActiveSchoolCount();
+//       Long currentMonthSchoolGrowth = schoolRepository.getCurrentMonthSchoolGrowth();
+//
+//       SchoolTotalCount schoolTotalCount = new SchoolTotalCount();
+//       schoolTotalCount.setSchoolCount(schoolCount);
+//       schoolTotalCount.setCurrentMonthSchoolGrowth(currentMonthSchoolGrowth);
+//
+//        return Collections.singletonList(schoolTotalCount);
+//
+//    }
 
 }
