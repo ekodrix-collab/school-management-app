@@ -6,6 +6,8 @@ import com.school.management.api.entity.User;
 import com.school.management.api.exception.BadRequestException;
 import com.school.management.api.model.requstModel.OnboardRequest;
 import com.school.management.api.model.responseModel.OnBoardResponse;
+import com.school.management.api.model.responseModel.SchoolTotalCount;
+import com.school.management.api.model.responseModel.TeacherTotalCount;
 import com.school.management.api.repository.TeacherRepository;
 import com.school.management.api.repository.UserRepository;
 import com.school.management.api.service.authService.AuthUtil;
@@ -18,6 +20,7 @@ import com.school.management.api.model.responseModel.TeacherResponseDto;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,7 +44,7 @@ public class TeacherService {
 
         String userRole = AuthUtil.getCurrentRole();
         if (!Constants.ROLE_ADMIN.equalsIgnoreCase(userRole)) {
-            throw new BadRequestException("Only admin can create admission");
+            throw new BadRequestException("Only admin can create Teacher");
         }
         String schoolId = AuthUtil.getCurrentSchoolId();
 
@@ -78,7 +81,8 @@ public class TeacherService {
     }
 
     public List<TeacherResponseDto> getAllTeachers() {
-        List<Teacher> teachers = teacherRepository.findAllTeachers();
+        String schoolId = AuthUtil.getCurrentSchoolId();
+        List<Teacher> teachers = teacherRepository.findAllTeachers(schoolId);
         return mapperService.toTeacherResponseDtoList(teachers);
     }
 

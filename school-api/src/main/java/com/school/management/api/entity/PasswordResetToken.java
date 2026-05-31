@@ -16,8 +16,11 @@ public class PasswordResetToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "mobile", nullable = false)
-    private String mobile;
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "otp")
+    private String otp;
 
     @Column(name = "token", nullable = false, unique = true)
     private String token;
@@ -28,14 +31,20 @@ public class PasswordResetToken {
     @Column(name = "is_used")
     private Boolean isUsed = false;
 
+    @Column(name = "otp_verified")
+    private Boolean otpVerified = false;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public PasswordResetToken(String mobile, String token, LocalDateTime expiresAt) {
-        this.mobile = mobile;
+
+    public PasswordResetToken(String email, String otp, String token, LocalDateTime expiresAt) {
+        this.email = email;
+        this.otp = otp;
         this.token = token;
         this.expiresAt = expiresAt;
         this.isUsed = false;
+        this.otpVerified = false;
         this.createdAt = LocalDateTime.now();
     }
 
