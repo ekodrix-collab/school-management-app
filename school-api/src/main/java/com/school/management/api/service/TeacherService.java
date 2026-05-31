@@ -129,17 +129,4 @@ public class TeacherService {
         return "Teacher deleted successfully";
     }
 
-//    public List<TeacherTotalCount> getTeacherTotalCount(){
-//
-//        Long teacherCount =  teacherRepository.getTeacherCount();
-//        Long currentMonthTeacherGrowth = teacherRepository.getCurrentMonthTeacherGrowth();
-//
-//        TeacherTotalCount teacherTotalCount = new TeacherTotalCount();
-//        teacherTotalCount.setTeacherCount(teacherCount);
-//        teacherTotalCount.setCurrentMonthTeacherGrowth(currentMonthTeacherGrowth);
-//
-//        return Collections.singletonList(teacherTotalCount);
-//
-//    }
-
 }

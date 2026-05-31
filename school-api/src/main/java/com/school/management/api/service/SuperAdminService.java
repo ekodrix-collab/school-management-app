@@ -7,8 +7,6 @@ import com.school.management.api.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
 
 @Service
 public class SuperAdminService {
@@ -22,35 +20,7 @@ public class SuperAdminService {
     @Autowired
     TeacherRepository teacherRepository;
 
-    @Autowired
-    SchoolService schoolService;
-
-    @Autowired
-    TeacherService teacherService;
-
-    @Autowired
-    StudentService studentService;
-
-
     public TotalCountResponse getTotalCount(){
-//       List<SchoolTotalCount> schoolTotalCount = schoolService.getSchoolTotalCount();
-//       List<TeacherTotalCount> teacherTotalCount = teacherService.getTeacherTotalCount();
-//       List<StudentTotalCount> studentTotalCounts = studentService.getStudentTotalCount();
-//
-//        RevenueTotalCount revenueTotalCount = new RevenueTotalCount();
-//        revenueTotalCount.setRevenue(0.0);
-//        revenueTotalCount.setCurrentMonthRevenue(0.0);
-//
-//        TotalCountResponse totalCountResponse = new TotalCountResponse();
-//        totalCountResponse.setSchoolTotalCount(schoolTotalCount);
-//        totalCountResponse.setTeacherTotalCount(teacherTotalCount);
-//        totalCountResponse.setStudentTotalCount(studentTotalCounts);
-//        totalCountResponse.setRevenueTotalCount(Collections.singletonList(revenueTotalCount));
-//
-//        return Collections.singletonList(totalCountResponse);
-
-
-
 
        Long activeSchoolCount = schoolRepository.getActiveSchoolCount();
        Long totalStudentCount = studentRepository.getStudentCount();

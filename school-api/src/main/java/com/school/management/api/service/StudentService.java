@@ -108,18 +108,5 @@ public class StudentService {
 
         studentRepository.delete(student);
     }
-//
-//    public List<StudentTotalCount> getStudentTotalCount(){
-//
-//        Long studentCount =  studentRepository.getStudentCount();
-//        Long currentMonthStudentGrowth = studentRepository.getCurrentMonthStudentGrowth();
-//
-//        StudentTotalCount studentTotalCount = new StudentTotalCount();
-//        studentTotalCount.setStudentCount(studentCount);
-//        studentTotalCount.setCurrentMonthStudentGrowth(currentMonthStudentGrowth);
-//
-//        return Collections.singletonList(studentTotalCount);
-//
-//    }
 
 }

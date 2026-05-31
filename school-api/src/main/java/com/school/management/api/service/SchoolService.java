@@ -110,17 +110,4 @@ public class SchoolService {
         schoolRepository.delete(school);
     }
 
-//    public List<SchoolTotalCount> getSchoolTotalCount(){
-//
-//       Long schoolCount =  schoolRepository.getActiveSchoolCount();
-//       Long currentMonthSchoolGrowth = schoolRepository.getCurrentMonthSchoolGrowth();
-//
-//       SchoolTotalCount schoolTotalCount = new SchoolTotalCount();
-//       schoolTotalCount.setSchoolCount(schoolCount);
-//       schoolTotalCount.setCurrentMonthSchoolGrowth(currentMonthSchoolGrowth);
-//
-//        return Collections.singletonList(schoolTotalCount);
-//
-//    }
-
 }
